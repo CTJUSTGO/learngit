@@ -9,7 +9,7 @@
     <div class="shop-header-main">
       <img src="https://fuss10.elemecdn.com/9/ec/1f13f62196de7301242a6cebbc8e0png.png" />
       <div class="shop-header-content">
-        <h2 class="shop-header-shopName">乐凯撒比萨（皇庭广场店）</h2>
+        <h2 class="shop-header-shopName">{{ shopheader.name }}</h2>
         <p class="shop-header-delivery">
           <span>商家配送 / </span>
           <span>37分钟送达 / </span>
@@ -33,9 +33,16 @@
 </template>
 
 <script>
-  export default {
-    name: 'header'
+import { mapState } from 'vuex'
+export default {
+  name: 'header',
+  mounted () {
+    this.$store.dispatch('shopheader')
+  },
+  computed: {
+    ...mapState(['shopheader'])
   }
+}
 </script>
 
 <style lang="scss">
@@ -73,6 +80,7 @@
         svg{
           width:px2rem(50);
           height:px2rem(50);
+          fill:#fff;
         }
       }
     }

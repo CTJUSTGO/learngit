@@ -11,22 +11,25 @@
         111
       </mt-tab-container-item>
       <mt-tab-container-item id="2">
-        2222
+        <Tab2 />
       </mt-tab-container-item>
     </mt-tab-container>
   </div>
 </template>
 
 <script>
-  export default {
-    name: 'main',
-    data () {
-      return {
-        selected: '1'
-      }
+import Tab2 from './Tab2'
+export default {
+  name: 'main',
+  data () {
+    return {
+      selected: '1'
     }
-
+  },
+  components: {
+    'Tab2': Tab2
   }
+}
 </script>
 
 <style lang="scss">

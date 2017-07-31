@@ -19,7 +19,7 @@ export default new Router({
       component: Find
     },
     {
-      path: '/shop',
+      path: '/shop/:id',
       name: 'Shop',
       component: Shop
     }

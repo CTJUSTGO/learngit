@@ -22,7 +22,7 @@
       </div>
     </div>
     <div class="my-header-m">
-      <router-link to="/serach" class="serach">
+      <router-link to="/shop/1" class="serach">
         <input type="text" :value="homeinput">
       </router-link>
     </div>

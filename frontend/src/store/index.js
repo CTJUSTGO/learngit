@@ -16,7 +16,7 @@ export default new Vuex.Store({
     banner: {
       bannerPage: ''
     },
-    homeprolist: '',
+    homeprolist: [],
     shopheader: ''
 
   },
@@ -110,7 +110,6 @@ export default new Vuex.Store({
     shopheader: function (context) {
       Vue.http.get('http://localhost:3000/shop/header').then(function (res) {
         _this.shopheader = res.body
-        console.log(_this.shopheader)
         context.commit('SHOPHEADER')
       }, function (err) {
         console.log(err)

@@ -16,8 +16,9 @@ export default new Vuex.Store({
     banner: {
       bannerPage: ''
     },
-    homeprolist: '',
-    shopheader: ''
+    homeprolist: [],
+    shopheader: '',
+    giftList: []
 
   },
   mutations: {
@@ -38,6 +39,9 @@ export default new Vuex.Store({
     },
     SHOPHEADER: function (state) {
       state.shopheader = _this.shopheader
+    },
+    FINDGIFT: function (state) {
+      state.giftList = _this.giftList
     }
   },
   // getters state 的计算属性
@@ -112,6 +116,14 @@ export default new Vuex.Store({
         _this.shopheader = res.body
         console.log(_this.shopheader)
         context.commit('SHOPHEADER')
+      }, function (err) {
+        console.log(err)
+      })
+    },
+    findgift: function (context) {
+      Vue.http.get('http://localhost:3000/find/gift').then(function (res) {
+        _this.giftList = res.body
+        context.commit('FINDGIFT')
       }, function (err) {
         console.log(err)
       })

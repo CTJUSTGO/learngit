@@ -103,4 +103,16 @@ router.get('/shop/header', function(req, res, next) {
 
 })
 
+router.get('/find/gift', function(req, res, next) {
+  https.get('https://mainsite-restapi.ele.me/member/gifts/suggest', function(response) {
+    var data = ''
+    response.on('data', function (chunk) {
+      data += chunk;
+    })
+    response.on('end', function () {
+      res.send(data);
+    })
+  })
+
+})
 module.exports = router;

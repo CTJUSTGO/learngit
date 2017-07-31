@@ -1,59 +1,67 @@
 <template>
   <div class="loadmore">
     <h3 class="index-title">推荐商家</h3>
-    <mt-loadmore :top-method="loadTop" :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" ref="loadmore">
-      <ul>
-        <li class="pro-list" key="index" v-for="(item,index) in homeprolist">
-          <div class="pro-list-l">
-            <img src="https://fuss10.elemecdn.com/0/3a/199d358d7d5757ab2f6184b153cc4jpeg.jpeg?imageMogr/format/webp/thumbnail/!120x120r/gravity/Center/crop/120x120/" alt="" />
-          </div>
-          <div class="pro-list-r">
-            <h3 class="pro-list-r-t">
-              <div class="pro-list-r-t-l">深圳麦当劳民田路餐厅</div>
-              <div class="pro-list-r-t-r">
-                <i class="title-logo">票</i>
-              </div>
-            </h3>
-            <div class="pro-list-r-m">
-              <div class="pro-list-r-m-l">
-                <div class="rating-wrapper">
-                  <div class="rating-max">
-                    <svg class="rating-gray" key="index" v-for="(item,index) in rating">
-                      <use  xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#rating-star"></use>
-                    </svg>
-                  </div>
-                  <div class="rating-rating">
-                    <svg class="rating-yellow" key="index" v-for="(item,index) in rating">
-                      <use  xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#rating-star"></use>
-                    </svg>
-                  </div>
+    <ul v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="80">
+      <li class="pro-list" key="index" v-for="(item,index) in homeprolist">
+        <div class="pro-list-l">
+          <img v-if="item.image_path.substr(-3) == 'peg'" :src="'https://fuss10.elemecdn.com/'+ item.image_path.substr(0,1) +'/' + item.image_path.substr(1,2) + '/' + item.image_path.substr(3) + '.jpeg?imageMogr/format/webp/thumbnail/!120x120r/gravity/Center/crop/120x120/'" alt="" />
+          <img v-else-if="item.image_path.substr(-3) == 'png'" :src="'https://fuss10.elemecdn.com/'+ item.image_path.substr(0,1) +'/' + item.image_path.substr(1,2) + '/' + item.image_path.substr(3) + '.png?imageMogr/format/webp/thumbnail/!120x120r/gravity/Center/crop/120x120/'" alt="" />
+        </div>
+        <div class="pro-list-r">
+          <h3 class="pro-list-r-t">
+            <div v-if="item.is_premium" class="pro-list-r-t-l-before">{{ item.name }}</div>
+            <div v-else class="pro-list-r-t-l">{{ item.name }}</div>
+            <div class="pro-list-r-t-r">
+              <i key="nindex" v-if="item.supports" v-for="(n,nindex) in item.supports" class="title-logo">{{ n.icon_name }}</i>
+            </div>
+          </h3>
+          <div class="pro-list-r-m">
+            <div class="pro-list-r-m-l">
+              <div class="rating-wrapper">
+                <div class="rating-max">
+                  <svg class="rating-gray" key="index" v-for="(item,index) in rating">
+                    <use  xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#rating-star"></use>
+                  </svg>
                 </div>
-                <span class="index-rate">4.4</span>
-                <span>月售2281单</span>
+                <div class="rating-rating" :style="'width:'+ (item.rating/5)*100 +'%'">
+                  <svg class="rating-yellow" key="index" v-for="(item,index) in rating">
+                    <use  xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#rating-star"></use>
+                  </svg>
+                </div>
               </div>
-              <div class="pro-list-r-m-r">
-                <span>蜂鸟专送</span>
-              </div>
+              <span class="index-rate">{{ item.rating }}</span>
+              <span>月售{{ item.recent_order_num }}单</span>
             </div>
-            <div class="pro-list-r-b">
-              <div class="pro-list-r-b-l">
-                <span>50元起送</span>
-                <span>/ 配送费¥20</span>
-                <span>/ ¥29/人</span>
-              </div>
-              <div class="pro-list-r-b-r">
-                <span>852m</span>
-                <span class="need-time">/ 35分钟</span>
-              </div>
+            <div class="pro-list-r-m-r">
+              <span v-if="item.delivery_mode" :style="'backgorund-color:#' + item.delivery_mode.color">{{ item.delivery_mode.text }}</span>
             </div>
           </div>
-        </li>
-      </ul>
-      <div slot="top" class="mint-loadmore-top">
-        <span v-show="topStatus !== 'loading'" :class="{ 'rotate': topStatus === 'drop' }">↓</span>
-        <span v-show="topStatus === 'loading'">Loading...</span>
-      </div>
-    </mt-loadmore>
+          <div class="pro-list-r-b">
+            <div class="pro-list-r-b-l">
+              <span>{{ item.float_minimum_order_amount }}元起送</span>
+              <span>/ {{ item.piecewise_agent_fee.description }}</span>
+              <span>/ {{ item.average_cost }}</span>
+            </div>
+            <div class="pro-list-r-b-r">
+              <span v-if="item.distance < 1000">{{ item.distance }}m</span>
+              <span v-else>{{ (item.distance / 1000).toFixed(2) }}km </span>
+              <span class="need-time">/ {{ item.order_lead_time }}分钟</span>
+            </div>
+          </div>
+          <div class="pro-list-actor">
+            <div class="pro-list-actor-list">
+              <div v-if="index < 2 || isShow" class="pro-list-actor-list-con" v-for="(ii,index) in item.activities">
+                <i :style="'background-color: #' + ii.icon_color + ';color: rgb(255, 255, 255); border-color: #' + ii.icon_color + ';'">{{ ii.icon_name }}</i>
+                <span>{{ ii.description }}</span>
+              </div>
+            </div>
+            <div v-if="item.activities.length > 2" class="pro-list-actor-btn" @click="addClick">
+              {{ item.activities.length }}个活动
+            </div>
+          </div>
+        </div>
+      </li>
+    </ul>
   </div>
 </template>
 <script>
@@ -62,7 +70,8 @@ export default {
   name: 'loadmore',
   data () {
     return {
-      'rating': 5
+      'rating': 5,
+      'isShow': false
     }
   },
   mounted () {
@@ -70,6 +79,22 @@ export default {
   },
   computed: {
     ...mapState(['homeprolist'])
+  },
+  methods: {
+    loadMore () {
+      var _this = this
+      if (_this.loading) {
+        return false
+      }
+      _this.loading = true
+      setTimeout(() => {
+        _this.$store.dispatch('homeprolist')
+        _this.loading = false
+      }, 50)
+    },
+    addClick () {
+      this.isShow = !this.isShow
+    }
   }
 }
 </script>
@@ -112,7 +137,7 @@ export default {
           display: flex;
           justify-content: space-between;
           align-items: center;
-          .pro-list-r-t-l{
+          .pro-list-r-t-l-before{
             display: flex;
             align-items: center;
             max-width: px2rem(375);
@@ -138,6 +163,18 @@ export default {
               padding: 0 px2rem(5);
               margin-right: px2rem(10);
             }
+          }
+          .pro-list-r-t-l{
+            display: flex;
+            align-items: center;
+            max-width: px2rem(375);
+            color: #333;
+            font-weight: 700;
+            height: px2rem(32);
+            font-size: px2rem(30);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
           }
           .pro-list-r-t-r{
             display: flex;
@@ -215,6 +252,31 @@ export default {
           justify-content: space-between;
           .need-time{
             color: #2395ff;
+          }
+        }
+        .pro-list-actor{
+          margin-top: px2rem(15);
+          border-top: px2rem(1) solid #eee;
+          color: #939393;
+          position: relative;
+          .pro-list-actor-list{
+            padding-top: px2rem(10);
+            .pro-list-actor-list-con{
+              font-size: px2rem(20);
+              line-height: px2rem(32);
+
+            }
+          }
+          .pro-list-actor-btn{
+            position: absolute;
+            top: 0;
+            right: 0;
+            height: 100%;
+            color: #999;
+            text-align: right;
+            padding: px2rem(20) 0 px2rem(15);
+            font-size: px2rem(20);
+            line-height: px2rem(20);
           }
         }
       }

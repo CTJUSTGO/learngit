@@ -5,27 +5,22 @@ import VueResource from 'vue-resource'
 Vue.use(Vuex)
 Vue.use(VueResource)
 var _this = this
+var offset = 0
 
 export default new Vuex.Store({
   state: {
     homeinput: '搜索商家、商品',
-    weather: {
-      temp: '',
-      weather: '',
-      image_hash: ''
-    },
+    weather: '',
     place: '',
     hotsearch: '',
     banner: {
       bannerPage: ''
     },
-    homeprolist: ''
+    homeprolist: []
   },
   mutations: {
     WEATHER: function (state) {
-      state.weather.temp = _this.weather.temperature + '°'
-      state.weather.weather = _this.weather.description
-      state.weather.image_hash = 'https://fuss10.elemecdn.com/' + _this.weather.image_hash + '.png?imageMogr/format/webp/thumbnail/!69x69r/gravity/Center/crop/69x69/'
+      state.weather = _this.weather
     },
     HOTSEARCH: function (state) {
       state.hotsearch = _this.hotsearch
@@ -37,7 +32,7 @@ export default new Vuex.Store({
       state.banner.bannerPage = _this.bannerPage
     },
     HOMEPROLIST: function (state) {
-      state.homeprolist = _this.homeprolist
+      state.homeprolist = state.homeprolist.concat(_this.homeprolist)
     }
   },
   // getters state 的计算属性
@@ -95,18 +90,17 @@ export default new Vuex.Store({
       })
     },
     homeprolist: function (context) {
-      var offset = 0
       Vue.http.get('http://localhost:3000/homeproductslist', {
         params: {
           offset: offset
         }
       }).then(function (res) {
-        console.log(res.body)
         _this.homeprolist = res.body
         context.commit('HOMEPROLIST')
       }, function (err) {
         console.log(err)
       })
+      offset += 20
     }
   }
 })

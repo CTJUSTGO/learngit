@@ -5,7 +5,7 @@ import App from './App'
 import router from './router'
 import VueResource from 'vue-resource'
 import store from './store'
-import { Swipe, SwipeItem, Loadmore } from 'mint-ui'
+import { Swipe, SwipeItem, Loadmore, InfiniteScroll } from 'mint-ui'
 
 Vue.config.productionTip = false
 
@@ -13,6 +13,7 @@ Vue.use(VueResource)
 Vue.component(Swipe.name, Swipe)
 Vue.component(SwipeItem.name, SwipeItem)
 Vue.component(Loadmore.name, Loadmore)
+Vue.use(InfiniteScroll)
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

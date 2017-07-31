@@ -12,11 +12,12 @@
       </div>
       <div class="my-header-t-r">
         <div class="my-header-t-r-l">
-          <span>{{ weather.temp }}</span>
-          <span>{{ weather.weather }}</span>
+          <span>{{ weather.temperature }}°</span>
+          <span>{{ weather.description }}</span>
         </div>
         <div class="my-header-t-r-r">
-          <img :src="weather.image_hash" alt="">
+          <img v-if="weather.image_hash.substr(-3) == 'png'" :src="'https://fuss10.elemecdn.com/'+ weather.image_hash.substr(0,1) + '/' + weather.image_hash.substr(1,2) + '/' +weather.image_hash.substr(3) +'.png?imageMogr/format/webp/thumbnail/!69x69r/gravity/Center/crop/69x69/'" alt="">
+          <img v-else-if="weather.image_hash.substr(-3) == 'peg'" :src="'https://fuss10.elemecdn.com/'+ weather.image_hash.substr(0,1) + '/' + weather.image_hash.substr(1,2) + '/' +weather.image_hash.substr(3) +'.jpeg?imageMogr/format/webp/thumbnail/!69x69r/gravity/Center/crop/69x69/'" alt="">
         </div>
       </div>
     </div>

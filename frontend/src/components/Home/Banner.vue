@@ -10,7 +10,8 @@
         href="#" key="indexx"
         v-for="(item,indexx) in banner.bannerPage[index]"
         >
-        <img class="banner-list-img" :src="'https://fuss10.elemecdn.com/' + item.image_hash + '.jpeg?imageMogr/format/webp/thumbnail/!90x90r/gravity/Center/crop/90x90/'" alt="" />
+        <img v-if="item.image_hash.substr(-3) == 'peg'" class="banner-list-img" :src="'https://fuss10.elemecdn.com/' + item.image_hash.substr(0,1)+ '/' + item.image_hash.substr(1,2) + '/' + item.image_hash.substr(3) + '.jpeg?imageMogr/format/webp/thumbnail/!90x90r/gravity/Center/crop/90x90/'" alt="" />
+        <img v-else-if="item.image_hash.substr(-3) == 'png'" class="banner-list-img" :src="'https://fuss10.elemecdn.com/' + item.image_hash.substr(0,1)+ '/' + item.image_hash.substr(1,2) + '/' + item.image_hash.substr(3) + '.png?imageMogr/format/webp/thumbnail/!90x90r/gravity/Center/crop/90x90/'" alt="" />
         <span class="title">{{ item.name }}</span>
       </a>
     </mt-swipe-item>
@@ -48,7 +49,7 @@ export default {
      float: left;
      margin-top: px2rem(22);
      box-sizing: border-box;
-     height: 36%; 
+     height: 36%;
      text-align: center;
      text-decoration: none;
      width: 25%;

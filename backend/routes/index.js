@@ -28,7 +28,7 @@ router.get('/weather', function(req, res, next) {
     })
   })
 
-})
+});
 
 router.get('/hotsearch', function(req, res, next) {
 
@@ -43,7 +43,7 @@ router.get('/hotsearch', function(req, res, next) {
     })
   })
 
-})
+});
 
 router.get('/place', function(req, res, next) {
 
@@ -58,7 +58,7 @@ router.get('/place', function(req, res, next) {
     })
   })
 
-})
+});
 
 router.get('/banner', function(req, res, next) {
 
@@ -73,17 +73,29 @@ router.get('/banner', function(req, res, next) {
     })
   })
 
-})
+});
 
 router.get('/homeproductslist', function(req, res, next) {
 
-  var offset = req.query.offset;;
+  var offset = req.query.offset;
   https.get('https://mainsite-restapi.ele.me/shopping/restaurants?latitude=22.533012&longitude=113.930475&offset='+offset+'&limit=20&extras[]=activities&terminal=h5', function(response) {
     var data = ''
     response.on('data', function (chunk) {
       data += chunk;
     })
+    response.on('end', function () {
+      res.send(data);
+    })
+  })
 
+});
+
+router.get('/shop/header', function(req, res, next) {
+  https.get('https://mainsite-restapi.ele.me/shopping/restaurant/155170084', function(response) {
+    var data = ''
+    response.on('data', function (chunk) {
+      data += chunk;
+    })
     response.on('end', function () {
       res.send(data);
     })

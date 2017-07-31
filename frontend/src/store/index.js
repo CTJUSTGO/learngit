@@ -19,7 +19,9 @@ export default new Vuex.Store({
     banner: {
       bannerPage: ''
     },
-    homeprolist: ''
+    homeprolist: '',
+    shopheader: ''
+
   },
   mutations: {
     WEATHER: function (state) {
@@ -38,6 +40,9 @@ export default new Vuex.Store({
     },
     HOMEPROLIST: function (state) {
       state.homeprolist = _this.homeprolist
+    },
+    SHOPHEADER: function (state) {
+      state.shopheader = _this.shopheader
     }
   },
   // getters state 的计算属性
@@ -104,6 +109,15 @@ export default new Vuex.Store({
         console.log(res.body)
         _this.homeprolist = res.body
         context.commit('HOMEPROLIST')
+      }, function (err) {
+        console.log(err)
+      })
+    },
+    shopheader: function (context) {
+      Vue.http.get('http://localhost:3000/shop/header').then(function (res) {
+        _this.shopheader = res.body
+        console.log(_this.shopheader)
+        context.commit('SHOPHEADER')
       }, function (err) {
         console.log(err)
       })

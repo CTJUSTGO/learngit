@@ -12,8 +12,5 @@ export default {
 
 <style lang="scss">
 @import './assets/css/reset.scss';
-<<<<<<< HEAD
 
-=======
->>>>>>> e4614516815b495ab007f19e3ff2830f77d196bd
 </style>

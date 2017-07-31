@@ -16,13 +16,9 @@ export default new Vuex.Store({
     banner: {
       bannerPage: ''
     },
-<<<<<<< HEAD
-    homeprolist: []
-=======
     homeprolist: '',
     shopheader: ''
 
->>>>>>> e4614516815b495ab007f19e3ff2830f77d196bd
   },
   mutations: {
     WEATHER: function (state) {
@@ -38,14 +34,10 @@ export default new Vuex.Store({
       state.banner.bannerPage = _this.bannerPage
     },
     HOMEPROLIST: function (state) {
-<<<<<<< HEAD
       state.homeprolist = state.homeprolist.concat(_this.homeprolist)
-=======
-      state.homeprolist = _this.homeprolist
     },
     SHOPHEADER: function (state) {
       state.shopheader = _this.shopheader
->>>>>>> e4614516815b495ab007f19e3ff2830f77d196bd
     }
   },
   // getters state 的计算属性
@@ -113,9 +105,7 @@ export default new Vuex.Store({
       }, function (err) {
         console.log(err)
       })
-<<<<<<< HEAD
       offset += 20
-=======
     },
     shopheader: function (context) {
       Vue.http.get('http://localhost:3000/shop/header').then(function (res) {
@@ -125,7 +115,6 @@ export default new Vuex.Store({
       }, function (err) {
         console.log(err)
       })
->>>>>>> e4614516815b495ab007f19e3ff2830f77d196bd
     }
   }
 })

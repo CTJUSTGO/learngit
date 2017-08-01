@@ -115,4 +115,27 @@ router.get('/find/gift', function(req, res, next) {
   })
 
 })
+router.get('/find/sale', function(req, res, next) {
+  https.get('https://mainsite-restapi.ele.me/hotfood/v1/guess/likes?latitude=22.54286&longitude=114.059563&offset=0&limit=3&request_id=b81f3022-2dfe-40f1-9283-8d30d6da03be&tag_id=-1&columns=1', function(response) {
+    var data = ''
+    response.on('data', function (chunk) {
+      data += chunk;
+    })
+    response.on('end', function () {
+      res.send(data);
+    })
+  })
+
+})
+router.get('/filter/kinds',function(req,res,next){
+  https.get('https://mainsite-restapi.ele.me/shopping/v2/restaurant/category?latitude=22.54286&longitude=114.059563',function(response){
+    var data = ''
+    response.on('data',function(chunk){
+      data +=chunk;
+    })
+    response.on('end',function(){
+      res.send(data);
+    })
+  })
+})
 module.exports = router;

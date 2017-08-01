@@ -5,7 +5,7 @@ import App from './App'
 import router from './router'
 import VueResource from 'vue-resource'
 import store from './store'
-import { Swipe, SwipeItem, Loadmore, Navbar, InfiniteScroll, TabItem, TabContainer, TabContainerItem } from 'mint-ui'
+import { Swipe, SwipeItem, Loadmore, Navbar, InfiniteScroll, TabItem, TabContainer, TabContainerItem, Header } from 'mint-ui'
 
 Vue.component(TabContainer.name, TabContainer)
 Vue.component(TabContainerItem.name, TabContainerItem)
@@ -20,6 +20,7 @@ Vue.use(VueResource)
 Vue.component(Swipe.name, Swipe)
 Vue.component(SwipeItem.name, SwipeItem)
 Vue.component(Loadmore.name, Loadmore)
+Vue.component(Header.name, Header)
 Vue.use(InfiniteScroll)
 /* eslint-disable no-new */
 new Vue({

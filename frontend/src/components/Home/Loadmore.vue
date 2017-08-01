@@ -79,7 +79,7 @@ export default {
     }
   },
   mounted () {
-    this.$store.dispatch('homeprolist')
+
   },
   computed: {
     ...mapState(['homeprolist'])

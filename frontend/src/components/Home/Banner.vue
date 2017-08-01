@@ -2,12 +2,12 @@
   <mt-swipe class="banner" :auto="0">
     <mt-swipe-item
       class="banner-list"
-      key="index"
+      :key="index"
       v-for="(item,index) in banner.bannerPage"
       >
       <a
         class="banner-list-a"
-        href="#" key="indexx"
+        href="#" :key="indexx"
         v-for="(item,indexx) in banner.bannerPage[index]"
         >
         <img v-if="item.image_hash.substr(-3) == 'peg'" class="banner-list-img" :src="'https://fuss10.elemecdn.com/' + item.image_hash.substr(0,1)+ '/' + item.image_hash.substr(1,2) + '/' + item.image_hash.substr(3) + '.jpeg?imageMogr/format/webp/thumbnail/!90x90r/gravity/Center/crop/90x90/'" alt="" />

@@ -40,10 +40,10 @@
       </div>
       <p class="activity-sub-title">你的口味，我都懂得</p>
       <div class="activity-body">
-        <a class="discover-food">
-          <img src="https://fuss10.elemecdn.com/e/c3/af359945a94fa9ec816cd4a5c1a45jpeg.jpeg?imageMogr/format/webp/" width="324" height="322">
-          <p>探险家炒饭套餐+热狗+泡菜+鸡蛋</p>
-          <div class="fprice">￥28</div>
+        <a class="discover-food" v-for="(item,index) in saleList" :key="index">
+          <img :src="'https://fuss10.elemecdn.com/'+item.foods[0].image_hash.substr(0,1)+ '/' + item.foods[0].image_hash.substr(1,2) + '/' + item.foods[0].image_hash.substr(3) + '.jpeg?imageMogr/format/webp/'" width="324" height="322">
+          <p>{{item.foods[0].name}}</p>
+          <div class="fprice">{{item.foods[0].price}}分</div>
         </a>
         <p class="activity-more">查看更多<svg class="svg-next"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#tab_found_next_page"></use></svg></p>
 
@@ -51,16 +51,40 @@
 
     </div>
 
+    <div class="main">
+      <div class="activity-header">
+        <span class="line left"></span>
+        <svg class="activity-icon">
+          <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#nice"></use>
+        </svg>
+       限时好礼
+        <span class="line right"></span>
+      </div>
+      <p class="activity-sub-title">小积分换豪礼</p>
+      <div class="activity-body">
+        <a class="discover-food" v-for="(item,index) in giftList" :key="index">
+          <img :src="'https://fuss10.elemecdn.com/'+item.image_hash.substr(0,1)+ '/' + item.image_hash.substr(1,2) + '/' + item.image_hash.substr(3) + '.jpeg?imageMogr/format/webp/'" width="324" height="322">
+          <p>{{item.title}}</p>
+          <div class="fprice">￥{{item.points_required}}</div>
+        </a>
+        <p class="activity-more">查看更多<svg class="svg-next"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#tab_found_next_page"></use></svg></p>
+
+      </div>
+
+    </div>
   </div>
 </template>
 
 <script>
+import { mapState } from 'vuex'
 export default {
   name: 'Find',
-  data () {
-    return {
-      msg: 'Welcome to Your Vue.js App'
-    }
+  mounted () {
+    this.$store.dispatch('findgift')
+    this.$store.dispatch('findsale')
+  },
+  computed: {
+    ...mapState(['giftList', 'saleList'])
   }
 }
 </script>
@@ -68,6 +92,9 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
 @import '../../static/hotcss/px2rem.scss';
+#find {
+  padding-bottom:px2rem(50) 
+}
 .header {
   color: #fff;
   top: 0;

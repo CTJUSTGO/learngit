@@ -17,13 +17,12 @@ export default new Vuex.Store({
       bannerPage: ''
     },
     homeprolist: [],
-<<<<<<< HEAD
     shopheader: '',
-    giftList: []
-=======
-    shopheader: ''
->>>>>>> d38b9198ae701f2574b9a8a286185b5bd2609f99
-
+    giftList: [],
+    saleList: [],
+    filter: {
+      kinds: []
+    }
   },
   mutations: {
     WEATHER: function (state) {
@@ -46,6 +45,12 @@ export default new Vuex.Store({
     },
     FINDGIFT: function (state) {
       state.giftList = _this.giftList
+    },
+    FINDSALE: function (state) {
+      state.saleList = _this.saleList
+    },
+    FILTERKINDS: function (state) {
+      state.filter.kinds = _this.filterkinds
     }
   },
   // getters state 的计算属性
@@ -127,6 +132,23 @@ export default new Vuex.Store({
       Vue.http.get('http://localhost:3000/find/gift').then(function (res) {
         _this.giftList = res.body
         context.commit('FINDGIFT')
+      }, function (err) {
+        console.log(err)
+      })
+    },
+    findsale: function (context) {
+      Vue.http.get('http://localhost:3000/find/sale').then(function (res) {
+        _this.saleList = res.body
+        context.commit('FINDSALE')
+      }, function (err) {
+        console.log(err)
+      })
+    },
+    filterkinds: function (context) {
+      Vue.http.get('http://localhost:3000/filter/kinds').then(function (res) {
+        _this.filterkinds = res.body
+        console.log(res.body)
+        context.commit('FILTERKINDS')
       }, function (err) {
         console.log(err)
       })

@@ -3,6 +3,7 @@
     <my-header />
     <my-banner />
     <my-loadmore />
+    <my-bottom />
   </div>
 </template>
 
@@ -10,6 +11,7 @@
 import header from './Header'
 import banner from './Banner'
 import loadmore from './Loadmore'
+import bomtab from './Bomtab'
 export default {
   name: 'home',
   data () {
@@ -20,7 +22,8 @@ export default {
   components: {
     'my-header': header,
     'my-banner': banner,
-    'my-loadmore': loadmore
+    'my-loadmore': loadmore,
+    'my-bottom': bomtab
   }
 }
 </script>

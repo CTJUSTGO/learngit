@@ -17,13 +17,8 @@ export default new Vuex.Store({
       bannerPage: ''
     },
     homeprolist: [],
-<<<<<<< HEAD
     shopheader: '',
     giftList: []
-=======
-    shopheader: ''
->>>>>>> d38b9198ae701f2574b9a8a286185b5bd2609f99
-
   },
   mutations: {
     WEATHER: function (state) {

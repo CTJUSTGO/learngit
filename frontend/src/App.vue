@@ -1,17 +1,12 @@
 <template>
   <div id="app">
     <router-view></router-view>
-    <my-bottomtab />
   </div>
 </template>
 
 <script>
-import bomtab from './components/Bomtab'
 export default {
-  name: 'app',
-  components: {
-    'my-bottomtab': bomtab
-  }
+  name: 'app'
 }
 </script>
 

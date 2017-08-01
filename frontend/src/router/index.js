@@ -3,6 +3,9 @@ import Router from 'vue-router'
 import Find from '@/components/Find'
 import Home from '@/components/Home/Home'
 import Shop from '@/components/Shop'
+import Order from '@/components/Order/Order'
+import User from '@/components/User/User'
+import Login from '@/components/Login/Login'
 
 Vue.use(Router)
 
@@ -22,6 +25,21 @@ export default new Router({
       path: '/shop/:id',
       name: 'Shop',
       component: Shop
+    },
+    {
+      path: '/order',
+      name: 'Order',
+      component: Order
+    },
+    {
+      path: '/user',
+      name: 'User',
+      component: User
+    },
+    {
+      path: '/login',
+      name: 'Login',
+      component: Login
     }
   ]
 })

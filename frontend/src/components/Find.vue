@@ -27,7 +27,7 @@
       </a>
     </div>
     <div class="banner">
-       <img src="https://fuss10.elemecdn.com/b/6d/656006edcd86033a1b32b23ddea37jpeg.jpeg?imageMogr/format/webp/"/> 
+       <img src="https://fuss10.elemecdn.com/b/6d/656006edcd86033a1b32b23ddea37jpeg.jpeg?imageMogr/format/webp/"/>
     </div>
      <div class="main">
       <div class="activity-header">
@@ -50,17 +50,21 @@
       </div>
 
     </div>
-
+    <find-bottom />
   </div>
 </template>
 
 <script>
+import bomtab from './Find/Bomtab'
 export default {
   name: 'Find',
   data () {
     return {
       msg: 'Welcome to Your Vue.js App'
     }
+  },
+  components: {
+    'find-bottom': bomtab
   }
 }
 </script>
@@ -219,7 +223,7 @@ svg {
     font-size: px2rem(24);
         color: #ff5339;
     }
-    
+
 }
 .activity-more{
           font-size:px2rem(26);

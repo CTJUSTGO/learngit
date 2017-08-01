@@ -8,7 +8,7 @@
     <!-- tab-container -->
     <mt-tab-container v-model="selected">
       <mt-tab-container-item id="1">
-        111
+        <Tab1 />
       </mt-tab-container-item>
       <mt-tab-container-item id="2">
         <Tab2 />
@@ -19,6 +19,7 @@
 
 <script>
 import Tab2 from './Tab2'
+import Tab1 from './Tab1'
 export default {
   name: 'main',
   data () {
@@ -27,6 +28,7 @@ export default {
     }
   },
   components: {
+    'Tab1': Tab1,
     'Tab2': Tab2
   }
 }

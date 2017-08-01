@@ -1,34 +1,64 @@
 <template>
   <div class="shop-header">
-    <div class="shop-header-background"></div>
+    <div class="shop-header-background" v-if="shopheader.image_path.substr(-3) == 'png'"
+    :style="'background-image:url(https://fuss10.elemecdn.com/'+ shopheader.image_path.substr(0,1) + '/' + shopheader.image_path.substr(1,2) + '/' + shopheader.image_path.substr(3) +'.png?imageMogr/format/webp/thumbnail/!40p/blur/50x40/)'"></div>
+    <div class="shop-header-background" v-else-if="shopheader.image_path.substr(-3) == 'peg'"
+    :style="'background-image:url(https://fuss10.elemecdn.com/'+ shopheader.image_path.substr(0,1) + '/' + shopheader.image_path.substr(1,2) + '/' + shopheader.image_path.substr(3) +'.jpeg?imageMogr/format/webp/thumbnail/!40p/blur/50x40/)'"></div>
     <div class="shop-header-navBar">
       <router-link to="/">
         <svg><use xlink:href="#arrow-left"></use></svg> 
       </router-link>
     </div>
     <div class="shop-header-main">
-      <img src="https://fuss10.elemecdn.com/9/ec/1f13f62196de7301242a6cebbc8e0png.png" />
+      <img v-if="shopheader.image_path.substr(-3) == 'png'" :src="'https://fuss10.elemecdn.com/'+ shopheader.image_path.substr(0,1) + '/' + shopheader.image_path.substr(1,2) + '/' + shopheader.image_path.substr(3) +'.png?imageMogr/format/webp/thumbnail/!69x69r/gravity/Center/crop/69x69/'" alt="">
+      <img v-else-if="shopheader.image_path.substr(-3) == 'peg'" :src="'https://fuss10.elemecdn.com/'+ shopheader.image_path.substr(0,1) + '/' + shopheader.image_path.substr(1,2) + '/' + shopheader.image_path.substr(3) +'.jpeg?imageMogr/format/webp/thumbnail/!69x69r/gravity/Center/crop/69x69/'" alt="">
       <div class="shop-header-content">
         <h2 class="shop-header-shopName">{{ shopheader.name }}</h2>
         <p class="shop-header-delivery">
-          <span>商家配送 / </span>
-          <span>37分钟送达 / </span>
-          <span>配送费¥9</span>
+          <span>商家配送/</span>
+          <span>{{ shopheader.order_lead_time }}分钟送达 / </span>
+          <span>配送费¥{{ shopheader.float_delivery_fee }}</span>
         </p>
         <div class="shop-header-notice">
           <span>公告：</span>
-          <span>欢迎光临，用餐高峰期请提前下单，谢谢。</span>
+          <span>{{ shopheader.promotion_info }}</span>
         </div>
         <svg><use xlink:href="#arrow-right"></use></svg>
       </div>
     </div>
-    <div class="shop-header-activities">
+    <div class="shop-header-activities" v-on:click="show = !show">
       <p>
-        <i>新</i>
-        <span>新用户下单立减17.0元(不与其它活动同享)</span>
+        <i>{{ shopheader.activities[0].icon_name }}</i>
+        <span>{{ shopheader.activities[0].description }}</span>
       </p>
-      <div>4个活动</div>
+      <div>{{ shopheader.activities.length }}个活动</div>
     </div>
+    <transition name="fade">
+      <div v-if="show" class="bulletin-modal-container">
+        <h2>{{ shopheader.name }}</h2>
+        <div class="rating-wrapper">
+          <div class="rating-max">
+            <svg><use xlink:href="#rating-star"></use></svg>
+            <svg><use xlink:href="#rating-star"></use></svg>
+            <svg><use xlink:href="#rating-star"></use></svg>
+            <svg><use xlink:href="#rating-star"></use></svg>
+            <svg><use xlink:href="#rating-star"></use></svg>
+          </div>
+          <div class="rating-rating">
+            <svg><use xlink:href="#rating-star"></use></svg>
+            <svg><use xlink:href="#rating-star"></use></svg>
+            <svg><use xlink:href="#rating-star"></use></svg>
+            <svg><use xlink:href="#rating-star"></use></svg>
+            <svg><use xlink:href="#rating-star"></use></svg>
+          </div>
+        </div>
+        <h3><span>优惠信息</span></h3>
+        <p v-for="item in shopheader.activities" class="activity-container">
+          <i>{{ item.icon_name }}</i>
+          <span>{{ item.description }}</span>
+        </p>
+      </div>
+    </transition>
   </div>
 </template>
 
@@ -41,6 +71,11 @@ export default {
   },
   computed: {
     ...mapState(['shopheader'])
+  },
+  data () {
+    return {
+      'show': false
+    }
   }
 }
 </script>
@@ -53,7 +88,6 @@ export default {
     color: #fff;
     font-size:px2rem(22);
     .shop-header-background{
-      background-image: url('https://fuss10.elemecdn.com/9/ec/1f13f62196de7301242a6cebbc8e0png.png?imageMogr/format/webp/thumbnail/!40p/blur/50x40/');
       position: absolute;
       top: 0;
       left: 0;
@@ -165,6 +199,99 @@ export default {
         position: absolute;
         top: 0;
         right: 0;
+      }
+    }
+  }
+  .fade-enter-active, .fade-leave-active {
+    transition: opacity .5s
+  }
+  .fade-enter, .fade-leave-to {
+    opacity: 0
+  }
+  .bulletin-modal-container{
+    position: fixed;
+    z-index: 999;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border: px2rem(60) solid transparent;
+    border-top-width: px2rem(80);
+    border-bottom-width: px2rem(180);
+    overflow: auto;
+    background-color: #262626;
+    color: #fff;
+    h2{
+      text-align: center;
+      font-size: px2rem(36);
+    }
+    .rating-wrapper{
+      margin-top: px2rem(10);
+      position: relative;
+      left: 50%;
+      transform: translateX(-50%);
+      display: inline-block;
+      vertical-align: middle;
+      .rating-max{
+        display: flex;
+        height: px2rem(40);
+        svg{
+          fill: #ddd;
+          display: block;
+          flex: none;
+          width: px2rem(40);
+          height: px2rem(40);
+        }
+      }
+      .rating-rating{
+        height: px2rem(40);
+        display: flex;
+        position: absolute;
+        left: 0;
+        top: 0;
+        overflow: hidden;
+        svg{
+          fill: #ffaa0c;
+          display: block;
+          flex: none;
+          width: px2rem(40);
+          height: px2rem(40);
+        }
+      }
+    }
+    h3{
+      text-align: center;
+      margin: px2rem(60) 0 px2rem(40) 0;
+      background-position: 50%;
+      background-size: 100% 1px;
+      background-repeat: no-repeat;
+      font-weight: 400;
+      span{
+        font-size: px2rem(24);
+        padding: px2rem(10) px2rem(20);
+        border-radius: px2rem(50);
+        border: px2rem(1) solid #555;
+        background-color: #262626;
+      }
+    }
+    .activity-container{
+      font-size: px2rem(20);
+      line-height: px2rem(32);
+      display: flex;
+      i{
+        background-color: rgb(240, 115, 115);
+        color: rgb(255, 255, 255);
+        border-color: rgb(240, 115, 115);
+        margin-right: px2rem(10);
+        margin-top: px2rem(5);
+        font-style: normal;
+        line-height: 1;
+        height: px2rem(20);
+        display: inline-block;
+        box-sizing: border-box;
+        text-align: center;
+        border: 1px solid;
+        border-radius: px2rem(3);
       }
     }
   }

@@ -1,39 +1,134 @@
 <template>
-  <div class="overview-container">
-    <div class="overview-col1">
-      <b>4.3</b>
-      <div>综合评价</div>
-      <p>高于周边商家28.7%</p>
-    </div>
-    <div class="overview-col2">
-      <div class="overview-line">
-        <span>服务态度</span>
-        <span class="overview-lineContent">
-          <div class="rating-wrapper">
-            <div class="rating-max">
-              <svg><use xlink:href="#rating-star"></use></svg>
-              <svg><use xlink:href="#rating-star"></use></svg>
-              <svg><use xlink:href="#rating-star"></use></svg>
-              <svg><use xlink:href="#rating-star"></use></svg>
-              <svg><use xlink:href="#rating-star"></use></svg>
+    <div class="index-container">
+    <div class="overview-container">
+      <div class="overview-col1">
+        <b>{{ shopheader.rating }}</b>
+        <div>综合评价</div>
+        <p>高于周边商家{{ shopheader.float_minimum_order_amount }}%</p>
+      </div>
+      <div class="overview-col2">
+        <div class="overview-line">
+          <span>服务态度</span>
+          <span class="overview-lineContent">
+            <div class="rating-wrapper">
+              <div class="rating-max">
+                <svg><use xlink:href="#rating-star"></use></svg>
+                <svg><use xlink:href="#rating-star"></use></svg>
+                <svg><use xlink:href="#rating-star"></use></svg>
+                <svg><use xlink:href="#rating-star"></use></svg>
+                <svg><use xlink:href="#rating-star"></use></svg>
+              </div>
+              <div class="rating-rating">
+                <svg><use xlink:href="#rating-star"></use></svg>
+                <svg><use xlink:href="#rating-star"></use></svg>
+                <svg><use xlink:href="#rating-star"></use></svg>
+                <svg><use xlink:href="#rating-star"></use></svg>
+                <svg><use xlink:href="#rating-star"></use></svg>
+              </div>
             </div>
-            <div class="rating-rating">
-              <svg><use xlink:href="#rating-star"></use></svg>
-              <svg><use xlink:href="#rating-star"></use></svg>
-              <svg><use xlink:href="#rating-star"></use></svg>
-              <svg><use xlink:href="#rating-star"></use></svg>
-              <svg><use xlink:href="#rating-star"></use></svg>
+            <span>4.2</span>
+          </span>
+        </div>
+        <div class="overview-line">
+          <span>菜品价格</span>
+          <span class="overview-lineContent">
+            <div class="rating-wrapper">
+              <div class="rating-max">
+                <svg><use xlink:href="#rating-star"></use></svg>
+                <svg><use xlink:href="#rating-star"></use></svg>
+                <svg><use xlink:href="#rating-star"></use></svg>
+                <svg><use xlink:href="#rating-star"></use></svg>
+                <svg><use xlink:href="#rating-star"></use></svg>
+              </div>
+              <div class="rating-rating">
+                <svg><use xlink:href="#rating-star"></use></svg>
+                <svg><use xlink:href="#rating-star"></use></svg>
+                <svg><use xlink:href="#rating-star"></use></svg>
+                <svg><use xlink:href="#rating-star"></use></svg>
+                <svg><use xlink:href="#rating-star"></use></svg>
+              </div>
             </div>
-          </div>
-          <span>4.2</span>
-        </span>
+            <span>4.5</span>
+          </span>
+        </div>
+        <div class="overview-line">
+          <span>送达时间</span>
+          <span class="overview-small">{{ shopheader.order_lead_time }}分钟</span>
+        </div>
       </div>
     </div>
-  </div>
+    <section class="index-rateDetail">
+      <div class="index-tagBlock">
+        <ul>
+          <li v-for="(item,index) in ratingstags" v-on:click="change">{{ item.name }}({{ item.count }})</li>
+        </ul>
+      </div>
+      <ul v-infinite-scroll="Tab2" infinite-scroll-disabled="tab2" infinite-scroll-distance="80">
+        <li v-for="(item,index) in ratings" class="index-comment">
+          <div class="comment-block-container">
+            <small>{{ item.rated_at }}</small>
+            <img src="https://fuss10.elemecdn.com/f/2e/20a4300d40b97e98a5889591fb1f2jpeg.jpeg?imageMogr/format/webp/thumbnail/!60x60r/gravity/Center/crop/60x60/"/>
+            <div class="comment-block-content">
+              <h3>{{ item.username }}</h3>
+              <div class="rating-wrapper">
+                <div class="rating-max">
+                  <svg><use xlink:href="#rating-star"></use></svg>
+                  <svg><use xlink:href="#rating-star"></use></svg>
+                  <svg><use xlink:href="#rating-star"></use></svg>
+                  <svg><use xlink:href="#rating-star"></use></svg>
+                  <svg><use xlink:href="#rating-star"></use></svg>
+                </div>
+                <div class="rating-rating" :style="'width:' + (item.rating_star/5)*100 + '%'">
+                  <svg><use xlink:href="#rating-star"></use></svg>
+                  <svg><use xlink:href="#rating-star"></use></svg>
+                  <svg><use xlink:href="#rating-star"></use></svg>
+                  <svg><use xlink:href="#rating-star"></use></svg>
+                  <svg><use xlink:href="#rating-star"></use></svg>
+                </div>
+              </div>
+              <span class="comment-block-rating">{{ item.time_spent_desc }}</span>
+              <div class="comment-block-reply" v-if="item.reply_text">商家回复：{{ item.reply_text }}</div>
+              <ul class="comment-block-foods">
+                <li v-for="(val,key) in item.item_ratings">{{ val.food_name }}</li>
+              </ul>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </section>
+  </div>  
 </template>
 
 <script>
-  
+import { mapState } from 'vuex'
+export default {
+  name: 'tab2',
+  mounted () {
+    this.$store.dispatch('ratingstags')
+    this.$store.dispatch('shopheader')
+    this.$store.dispatch('ratings')
+  },
+  computed: {
+    ...mapState(['ratingstags', 'shopheader', 'ratings'])
+  },
+  methods: {
+    change (e) {
+      e.target.style.color = '#fff'
+      e.target.style.backgroundColor = '#3190e8'
+    },
+    Tab2 () {
+      var _this = this
+      if (_this.tab2) {
+        return false
+      }
+      _this.tab2 = true
+      setTimeout(() => {
+        _this.$store.dispatch('ratings')
+        _this.tab2 = false
+      }, 50)
+    }
+  }
+}
 </script>
 
 <style lang="scss">
@@ -52,6 +147,11 @@
       }
     }
   }
+.index-container{  
+  height: px2rem(980);
+  background-color: #eee;
+  overflow-y: auto;
+  margin-top: px2rem(5);
   .overview-container{
     margin-top:4px;
     background-color: #fff;
@@ -61,6 +161,194 @@
     display: flex;
     align-items: center;
     color: #666;
+    .overview-col1{
+      border-right: 1px solid #ddd;
+      text-align: center;
+      padding-right:px2rem(30);
+      b{
+        font-size: px2rem(48);
+        line-height: px2rem(48);
+        font-weight: 400;
+        color: #f60;
+        display: block;
+      }
+      div{
+        font-size: px2rem(28);
+        line-height: px2rem(42);
+      }
+      p{
+        font-size: px2rem(20);
+        line-height: px2rem(30);
+        color: #999;
+      }
+    }
+    .overview-col2{
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      align-items: center;
+      font-size:px2rem(28);
+      line-height:px2rem(28);
+      .overview-line{
+        width: 80%;
+        margin: px2rem(10) 0;
+        .rating-wrapper{
+          margin-left: px2rem(20);
+          position: relative;
+          overflow: hidden;
+          display: inline-block;
+          vertical-align: middle;
+          .rating-max{
+            display: flex;
+            height: px2rem(20);
+            svg{
+              fill: #ddd;
+              display: block;
+              flex: none;
+              width: px2rem(20);
+              height: px2rem(20);
+            }
+          }
+          .rating-rating{
+            height: px2rem(20);
+            display: flex;
+            position: absolute;
+            left: 0;
+            top: 0;
+            overflow: hidden;
+            svg{
+              fill: #ffaa0c;
+              display: block;
+              flex: none;
+              width: px2rem(20);
+              height: px2rem(20);
+            }
+          }
+        }
+        .overview-small{
+          padding-left: px2rem(20);
+          font-size: px2rem(20);
+          color: #999;
+        }
+      }
+    }
   }
+  .index-rateDetail{
+    padding:px2rem(30) px2rem(24);
+    background-color: #fff;
+    font-size:px2rem(24);
+    .index-tagBlock{
+      padding-bottom:px2rem(30);
+      border-bottom: 1px solid #ddd;
+      ul{
+        li{
+          display: inline-block;
+            padding:px2rem(15);
+            margin: px2rem(5) px2rem(10);
+            border-radius: px2rem(10);
+            color: #6d7885;
+            background-color: #ebf5ff;
+            font-size:px2rem(27);
+            line-height:px2rem(32); 
+        }
+      }	
+    }
+    ul{
+      .index-comment{
+        padding: px2rem(30) 0;
+        border-bottom: px2rem(1) solid #ddd;
+        .comment-block-container{
+          position: relative;
+          padding-left: px2rem(90);
+          small{
+            position: absolute;
+            top: px2rem(10);
+            right: 0;
+            font-size: px2rem(24);
+            color: #999;
+          }
+          img{
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: px2rem(60);
+            height: px2rem(60);
+            border-radius: 50%;
+          }
+          .comment-block-content{
+            font-size: px2rem(26);
+            h3{
+              font-size: px2rem(26);
+              margin-top: 0;
+              margin-bottom: px2rem(10);
+              color: #666;
+            }
+            .rating-wrapper{
+              position: relative;
+              overflow: hidden;
+              display: inline-block;
+              vertical-align: middle;
+              .rating-max{
+                display: flex;
+                height: px2rem(20);
+                svg{
+                  fill: #ddd;
+                  display: block;
+                  flex: none;
+                  width: px2rem(20);
+                  height: px2rem(20);
+                }
+              }
+              .rating-rating{
+                height: px2rem(20);
+                display: flex;
+                position: absolute;
+                left: 0;
+                top: 0;
+                overflow: hidden;
+                svg{
+                  fill: #ffaa0c;
+                  display: block;
+                  flex: none;
+                  width: px2rem(20);
+                  height: px2rem(20);
+                }
+              }
+            }
+            .comment-block-rating{
+              font-size: px2rem(25);
+              color: #999;
+              vertical-align: middle;
+            }
+            .comment-block-reply{
+              position: relative;
+              margin: px2rem(20) 0;
+              padding: px2rem(20);
+              background: #f3f3f3;
+              border-radius: px2rem(8);
+              color: #333;
+            }
+            .comment-block-foods{
+              li{
+                display: inline-block;
+                font-size: px2rem(22);
+                color: #999;
+                border: 1px solid #ddd;
+                padding: px2rem(8) px2rem(20);
+                margin: px2rem(7);
+                border-radius: px2rem(6);
+                max-width: px2rem(120);
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
 </style>
 

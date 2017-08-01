@@ -72,11 +72,13 @@
       </div>
 
     </div>
+    <find-bottom />
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
+import bomtab from './Find/Bomtab'
 export default {
   name: 'Find',
   mounted () {
@@ -85,6 +87,9 @@ export default {
   },
   computed: {
     ...mapState(['giftList', 'saleList'])
+  },
+  components: {
+    'find-bottom': bomtab
   }
 }
 </script>

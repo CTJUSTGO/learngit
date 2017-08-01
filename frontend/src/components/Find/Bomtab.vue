@@ -32,7 +32,7 @@ export default {
       }, {
         text: '订单',
         texttrue: '0089dc',
-        route: '/',
+        route: '/order',
         svg: '<use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#order-regular.41c17f8"></use>',
         svgtrue: '<g fill="none" fill-rule="evenodd"><rect width="38" height="38" fill="url(#order.070ae2a_a)" rx="2"></rect><rect width="24" height="2" x="7" y="8" fill="#FFF" rx="1"></rect><rect width="20" height="2" x="7" y="17" fill="#FFF" rx="1"></rect><rect width="8" height="2" x="7" y="26" fill="#FFF" rx="1"></rect></g>',
         isActive: false

@@ -46,7 +46,6 @@ export default new Vuex.Store({
     SHOPHEADER: function (state) {
       state.shopheader = _this.shopheader
     },
-<<<<<<< HEAD
     FINDGIFT: function (state) {
       state.giftList = _this.giftList
     },
@@ -55,7 +54,7 @@ export default new Vuex.Store({
     },
     FILTERKINDS: function (state) {
       state.filter.kinds = _this.filterkinds
-=======
+    },
     SHOPTAB1: function (state) {
       state.shoptab1 = _this.shoptab1
     },
@@ -64,7 +63,6 @@ export default new Vuex.Store({
     },
     RATINGS: function (state) {
       state.ratings = state.ratings.concat(_this.ratings)
->>>>>>> 8d523d9cd5932bbd675117af26f14e83d2bedaf1
     }
   },
   // getters state 的计算属性
@@ -142,39 +140,31 @@ export default new Vuex.Store({
         console.log(err)
       })
     },
-<<<<<<< HEAD
     findgift: function (context) {
       Vue.http.get('http://localhost:3000/find/gift').then(function (res) {
         _this.giftList = res.body
         context.commit('FINDGIFT')
-=======
+      }, function (err) {
+        console.log(err)
+      })
+    },
     shoptab1: function (context) {
       Vue.http.get('http://localhost:3000/shop/tab1').then(function (res) {
         _this.shoptab1 = res.body
         console.log(_this.shoptab1)
         context.commit('SHOPTAB1')
->>>>>>> 8d523d9cd5932bbd675117af26f14e83d2bedaf1
       }, function (err) {
         console.log(err)
       })
     },
-<<<<<<< HEAD
     findsale: function (context) {
       Vue.http.get('http://localhost:3000/find/sale').then(function (res) {
         _this.saleList = res.body
         context.commit('FINDSALE')
-=======
-    ratingstags: function (context) {
-      Vue.http.get('http://localhost:3000/ratings/tags').then(function (res) {
-        _this.ratingstags = res.body
-        console.log(_this.ratingstags)
-        context.commit('RATINGSTAGS')
->>>>>>> 8d523d9cd5932bbd675117af26f14e83d2bedaf1
       }, function (err) {
         console.log(err)
       })
     },
-<<<<<<< HEAD
     filterkinds: function (context) {
       Vue.http.get('http://localhost:3000/filter/kinds').then(function (res) {
         _this.filterkinds = res.body
@@ -183,7 +173,7 @@ export default new Vuex.Store({
       }, function (err) {
         console.log(err)
       })
-=======
+    },
     ratings: function (context) {
       Vue.http.get('http://localhost:3000/ratings', {
         params: {
@@ -197,7 +187,6 @@ export default new Vuex.Store({
         console.log(err)
       })
       offset += 10
->>>>>>> 8d523d9cd5932bbd675117af26f14e83d2bedaf1
     }
   }
 })

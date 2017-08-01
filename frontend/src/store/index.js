@@ -17,8 +17,12 @@ export default new Vuex.Store({
       bannerPage: ''
     },
     homeprolist: [],
+<<<<<<< HEAD
     shopheader: '',
     giftList: []
+=======
+    shopheader: ''
+>>>>>>> d38b9198ae701f2574b9a8a286185b5bd2609f99
 
   },
   mutations: {
@@ -114,7 +118,6 @@ export default new Vuex.Store({
     shopheader: function (context) {
       Vue.http.get('http://localhost:3000/shop/header').then(function (res) {
         _this.shopheader = res.body
-        console.log(_this.shopheader)
         context.commit('SHOPHEADER')
       }, function (err) {
         console.log(err)

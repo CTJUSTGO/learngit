@@ -3,63 +3,67 @@
     <h3 class="index-title">推荐商家</h3>
     <ul v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="80">
       <li class="pro-list" key="index" v-for="(item,index) in homeprolist">
-        <div class="pro-list-l">
-          <img v-if="item.image_path.substr(-3) == 'peg'" :src="'https://fuss10.elemecdn.com/'+ item.image_path.substr(0,1) +'/' + item.image_path.substr(1,2) + '/' + item.image_path.substr(3) + '.jpeg?imageMogr/format/webp/thumbnail/!120x120r/gravity/Center/crop/120x120/'" alt="" />
-          <img v-else-if="item.image_path.substr(-3) == 'png'" :src="'https://fuss10.elemecdn.com/'+ item.image_path.substr(0,1) +'/' + item.image_path.substr(1,2) + '/' + item.image_path.substr(3) + '.png?imageMogr/format/webp/thumbnail/!120x120r/gravity/Center/crop/120x120/'" alt="" />
-        </div>
-        <div class="pro-list-r">
-          <h3 class="pro-list-r-t">
-            <div v-if="item.is_premium" class="pro-list-r-t-l-before">{{ item.name }}</div>
-            <div v-else class="pro-list-r-t-l">{{ item.name }}</div>
-            <div class="pro-list-r-t-r">
-              <i key="nindex" v-if="item.supports" v-for="(n,nindex) in item.supports" class="title-logo">{{ n.icon_name }}</i>
-            </div>
-          </h3>
-          <div class="pro-list-r-m">
-            <div class="pro-list-r-m-l">
-              <div class="rating-wrapper">
-                <div class="rating-max">
-                  <svg class="rating-gray" key="index" v-for="(item,index) in rating">
-                    <use  xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#rating-star"></use>
-                  </svg>
-                </div>
-                <div class="rating-rating" :style="'width:'+ (item.rating/5)*100 +'%'">
-                  <svg class="rating-yellow" key="index" v-for="(item,index) in rating">
-                    <use  xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#rating-star"></use>
-                  </svg>
-                </div>
+        <router-link :to="'/shop/'+item.id">
+          <div class="pro-list-l">
+            <img v-if="item.image_path.substr(-3) == 'peg'" :src="'https://fuss10.elemecdn.com/'+ item.image_path.substr(0,1) +'/' + item.image_path.substr(1,2) + '/' + item.image_path.substr(3) + '.jpeg?imageMogr/format/webp/thumbnail/!120x120r/gravity/Center/crop/120x120/'" alt="" />
+            <img v-else-if="item.image_path.substr(-3) == 'png'" :src="'https://fuss10.elemecdn.com/'+ item.image_path.substr(0,1) +'/' + item.image_path.substr(1,2) + '/' + item.image_path.substr(3) + '.png?imageMogr/format/webp/thumbnail/!120x120r/gravity/Center/crop/120x120/'" alt="" />
+          </div>
+        </router-link>
+          <div class="pro-list-r">
+            <router-link :to="'/shop/'+item.id" class="pro-list-router">
+            <h3 class="pro-list-r-t">
+              <div v-if="item.is_premium" class="pro-list-r-t-l-before">{{ item.name }}</div>
+              <div v-else class="pro-list-r-t-l">{{ item.name }}</div>
+              <div class="pro-list-r-t-r">
+                <i key="nindex" v-if="item.supports" v-for="(n,nindex) in item.supports" class="title-logo">{{ n.icon_name }}</i>
               </div>
-              <span class="index-rate">{{ item.rating }}</span>
-              <span>月售{{ item.recent_order_num }}单</span>
-            </div>
-            <div class="pro-list-r-m-r">
-              <span v-if="item.delivery_mode" :style="'backgorund-color:#' + item.delivery_mode.color">{{ item.delivery_mode.text }}</span>
-            </div>
-          </div>
-          <div class="pro-list-r-b">
-            <div class="pro-list-r-b-l">
-              <span>{{ item.float_minimum_order_amount }}元起送</span>
-              <span>/ {{ item.piecewise_agent_fee.description }}</span>
-              <span>/ {{ item.average_cost }}</span>
-            </div>
-            <div class="pro-list-r-b-r">
-              <span v-if="item.distance < 1000">{{ item.distance }}m</span>
-              <span v-else>{{ (item.distance / 1000).toFixed(2) }}km </span>
-              <span class="need-time">/ {{ item.order_lead_time }}分钟</span>
-            </div>
-          </div>
-          <div class="pro-list-actor">
-            <div class="pro-list-actor-list">
-              <div v-if="index < 2 || isShow" class="pro-list-actor-list-con" v-for="(ii,index) in item.activities">
-                <i :style="'background-color: #' + ii.icon_color + ';color: rgb(255, 255, 255); border-color: #' + ii.icon_color + ';'">{{ ii.icon_name }}</i>
-                <span>{{ ii.description }}</span>
+            </h3>
+            <div class="pro-list-r-m">
+              <div class="pro-list-r-m-l">
+                <div class="rating-wrapper">
+                  <div class="rating-max">
+                    <svg class="rating-gray" key="index" v-for="(item,index) in rating">
+                      <use  xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#rating-star"></use>
+                    </svg>
+                  </div>
+                  <div class="rating-rating" :style="'width:'+ (item.rating/5)*100 +'%'">
+                    <svg class="rating-yellow" key="index" v-for="(item,index) in rating">
+                      <use  xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#rating-star"></use>
+                    </svg>
+                  </div>
+                </div>
+                <span class="index-rate">{{ item.rating }}</span>
+                <span>月售{{ item.recent_order_num }}单</span>
+              </div>
+              <div class="pro-list-r-m-r">
+                <span v-if="item.delivery_mode" :style="'backgorund-color:#' + item.delivery_mode.color">{{ item.delivery_mode.text }}</span>
               </div>
             </div>
-            <div v-if="item.activities.length > 2" class="pro-list-actor-btn" @click="addClick">
-              {{ item.activities.length }}个活动
+            <div class="pro-list-r-b">
+              <div class="pro-list-r-b-l">
+                <span>{{ item.float_minimum_order_amount }}元起送</span>
+                <span>/ {{ item.piecewise_agent_fee.description }}</span>
+                <span>/ {{ item.average_cost }}</span>
+              </div>
+              <div class="pro-list-r-b-r">
+                <span v-if="item.distance < 1000">{{ item.distance }}m</span>
+                <span v-else>{{ (item.distance / 1000).toFixed(2) }}km </span>
+                <span class="need-time">/ {{ item.order_lead_time }}分钟</span>
+              </div>
+            </div>
+            </router-link>
+            <div class="pro-list-actor">
+              <div class="pro-list-actor-list">
+                <div v-if="index < 2 || isShow" class="pro-list-actor-list-con" v-for="(ii,index) in item.activities">
+                  <i :style="'background-color: #' + ii.icon_color + ';color: rgb(255, 255, 255); border-color: #' + ii.icon_color + ';'">{{ ii.icon_name }}</i>
+                  <span>{{ ii.description }}</span>
+                </div>
+              </div>
+              <div v-if="item.activities.length > 2" class="pro-list-actor-btn" @click="addClick">
+                {{ item.activities.length }}个活动
+              </div>
             </div>
           </div>
-        </div>
       </li>
     </ul>
   </div>
@@ -100,6 +104,11 @@ export default {
 </script>
 <style lang="scss" scoped>
 @import '../../../static/hotcss/px2rem.scss';
+.pro-list-router{
+  display: block;
+  text-decoration: none;
+  color: #333;
+}
 .loadmore{
   background: #fff;
   font-family: 'Helvetica Neue',Tahoma,Arial,PingFangSC-Regular,'Hiragino Sans GB','Microsoft Yahei',sans-serif;

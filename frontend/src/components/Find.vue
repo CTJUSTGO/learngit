@@ -50,7 +50,6 @@
       </div>
 
     </div>
-<<<<<<< HEAD
 
     <div class="main">
       <div class="activity-header">
@@ -73,14 +72,10 @@
       </div>
 
     </div>
-=======
-    <find-bottom />
->>>>>>> 3ca864aa78fce43ceab2542453fb15c954cabd85
   </div>
 </template>
 
 <script>
-<<<<<<< HEAD
 import { mapState } from 'vuex'
 export default {
   name: 'Find',
@@ -90,18 +85,6 @@ export default {
   },
   computed: {
     ...mapState(['giftList', 'saleList'])
-=======
-import bomtab from './Find/Bomtab'
-export default {
-  name: 'Find',
-  data () {
-    return {
-      msg: 'Welcome to Your Vue.js App'
-    }
-  },
-  components: {
-    'find-bottom': bomtab
->>>>>>> 3ca864aa78fce43ceab2542453fb15c954cabd85
   }
 }
 </script>

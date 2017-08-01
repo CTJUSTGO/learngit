@@ -3,13 +3,10 @@ import Router from 'vue-router'
 import Find from '@/components/Find'
 import Home from '@/components/Home/Home'
 import Shop from '@/components/Shop'
-<<<<<<< HEAD
 import Filter from '@/components/Filter'
-=======
 import Order from '@/components/Order/Order'
 import User from '@/components/User/User'
 import Login from '@/components/Login/Login'
->>>>>>> 3ca864aa78fce43ceab2542453fb15c954cabd85
 
 Vue.use(Router)
 
@@ -31,11 +28,11 @@ export default new Router({
       component: Shop
     },
     {
-<<<<<<< HEAD
       path: '/filter',
       name: 'Filter',
       component: Filter
-=======
+    },
+    {
       path: '/order',
       name: 'Order',
       component: Order
@@ -49,7 +46,6 @@ export default new Router({
       path: '/login',
       name: 'Login',
       component: Login
->>>>>>> 3ca864aa78fce43ceab2542453fb15c954cabd85
     }
   ]
 })

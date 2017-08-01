@@ -91,7 +91,20 @@ router.get('/homeproductslist', function(req, res, next) {
 });
 
 router.get('/shop/header', function(req, res, next) {
-  https.get('https://mainsite-restapi.ele.me/shopping/restaurant/155170084', function(response) {
+  https.get('https://mainsite-restapi.ele.me/shopping/restaurant/150107389?extras[]=activities&extras[]=albums&extras[]=license&extras[]=identification&latitude=22.533012&longitude=113.930475', function(response) {
+    var data = '';    
+    response.on('data', function (chunk) {
+      data += chunk;
+    });  
+    response.on('end', function () {     
+        res.send(data);
+    })
+  })
+
+});
+
+router.get('/shop/tab1',function(req,res,next){
+  https.get('https://mainsite-restapi.ele.me/shopping/v2/menu?restaurant_id=155170084',function(response){
     var data = ''
     response.on('data', function (chunk) {
       data += chunk;
@@ -100,7 +113,32 @@ router.get('/shop/header', function(req, res, next) {
       res.send(data);
     })
   })
+});
 
-})
+router.get('/ratings/tags',function(req,res,next){
+  https.get('https://mainsite-restapi.ele.me/ugc/v2/restaurants/150107389/ratings/tags',function(response){
+    var data = ''
+    response.on('data', function (chunk) {
+      data += chunk;
+    })
+    response.on('end', function () {
+      res.send(data);
+    })
+  })
+});
+
+router.get('/ratings',function(req,res,next){
+  var offset = req.query.offset;
+  https.get('https://mainsite-restapi.ele.me/ugc/v2/restaurants/150107389/ratings?has_content=true&tag_name=%E5%85%A8%E9%83%A8&offset='+ offset +'&limit=10',function(response){
+    var data = ''
+    response.on('data', function (chunk) {
+      data += chunk;
+    })
+    response.on('end', function () {
+      res.send(data);
+    })
+  })
+});
+
 
 module.exports = router;

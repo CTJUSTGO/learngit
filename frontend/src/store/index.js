@@ -16,9 +16,11 @@ export default new Vuex.Store({
     banner: {
       bannerPage: ''
     },
-    homeprolist: '',
-    shopheader: ''
-
+    homeprolist: [],
+    shopheader: '',
+    shoptab1: [],
+    ratingstags: [],
+    ratings: []
   },
   mutations: {
     WEATHER: function (state) {
@@ -38,6 +40,15 @@ export default new Vuex.Store({
     },
     SHOPHEADER: function (state) {
       state.shopheader = _this.shopheader
+    },
+    SHOPTAB1: function (state) {
+      state.shoptab1 = _this.shoptab1
+    },
+    RATINGSTAGS: function (state) {
+      state.ratingstags = _this.ratingstags
+    },
+    RATINGS: function (state) {
+      state.ratings = state.ratings.concat(_this.ratings)
     }
   },
   // getters state 的计算属性
@@ -115,6 +126,38 @@ export default new Vuex.Store({
       }, function (err) {
         console.log(err)
       })
+    },
+    shoptab1: function (context) {
+      Vue.http.get('http://localhost:3000/shop/tab1').then(function (res) {
+        _this.shoptab1 = res.body
+        console.log(_this.shoptab1)
+        context.commit('SHOPTAB1')
+      }, function (err) {
+        console.log(err)
+      })
+    },
+    ratingstags: function (context) {
+      Vue.http.get('http://localhost:3000/ratings/tags').then(function (res) {
+        _this.ratingstags = res.body
+        console.log(_this.ratingstags)
+        context.commit('RATINGSTAGS')
+      }, function (err) {
+        console.log(err)
+      })
+    },
+    ratings: function (context) {
+      Vue.http.get('http://localhost:3000/ratings', {
+        params: {
+          offset: offset
+        }
+      }).then(function (res) {
+        _this.ratings = res.body
+        console.log(_this.ratings)
+        context.commit('RATINGS')
+      }, function (err) {
+        console.log(err)
+      })
+      offset += 10
     }
   }
 })

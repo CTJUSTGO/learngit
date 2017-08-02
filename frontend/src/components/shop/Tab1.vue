@@ -65,8 +65,8 @@ import { mapState } from 'vuex'
 export default {
   name: 'tab1',
   mounted () {
-    this.$store.dispatch('shoptab1')
-    this.$store.dispatch('shopheader')
+    var id = this.$route.params.id
+    this.$store.dispatch('shoptab1', id)
   },
   computed: {
     ...mapState(['shoptab1', 'shopheader'])

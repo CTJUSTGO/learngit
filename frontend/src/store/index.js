@@ -17,7 +17,7 @@ export default new Vuex.Store({
       bannerPage: ''
     },
     homeprolist: [],
-    shopheader: '',
+    shopheader: [],
     giftList: [],
     saleList: [],
     filter: {
@@ -25,7 +25,8 @@ export default new Vuex.Store({
     },
     shoptab1: [],
     ratingstags: [],
-    ratings: []
+    ratings: [],
+    ratingsscores: []
   },
   mutations: {
     WEATHER: function (state) {
@@ -44,7 +45,7 @@ export default new Vuex.Store({
       state.homeprolist = state.homeprolist.concat(_this.homeprolist)
     },
     SHOPHEADER: function (state) {
-      state.shopheader = _this.shopheader
+      state.shopheader.push(_this.shopheader)
     },
     FINDGIFT: function (state) {
       state.giftList = _this.giftList
@@ -60,6 +61,9 @@ export default new Vuex.Store({
     },
     RATINGSTAGS: function (state) {
       state.ratingstags = _this.ratingstags
+    },
+    RATINGSSCORES: function (state) {
+      state.ratingsscores = _this.ratingsscores
     },
     RATINGS: function (state) {
       state.ratings = _this.ratings
@@ -154,7 +158,6 @@ export default new Vuex.Store({
     shoptab1: function (context, id) {
       Vue.http.get('http://localhost:3000/shop/tab1?id=' + id).then(function (res) {
         _this.shoptab1 = res.body
-        console.log(_this.shoptab1)
         context.commit('SHOPTAB1')
       }, function (err) {
         console.log(err)
@@ -180,6 +183,15 @@ export default new Vuex.Store({
       Vue.http.get('http://localhost:3000/ratings/tags?id=' + id).then(function (res) {
         _this.ratingstags = res.body
         context.commit('RATINGSTAGS')
+      }, function (err) {
+        console.log(err)
+      })
+    },
+    ratingsscores: function (context, id) {
+      Vue.http.get('http://localhost:3000/ratings/scores?id=' + id).then(function (res) {
+        _this.ratingsscores = res.body
+        console.log(_this.ratingsscores)
+        context.commit('RATINGSSCORES')
       }, function (err) {
         console.log(err)
       })

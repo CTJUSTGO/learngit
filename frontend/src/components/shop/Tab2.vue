@@ -2,9 +2,9 @@
     <div class="index-container">
     <div class="overview-container">
       <div class="overview-col1">
-        <b>{{ shopheader.rating }}</b>
+        <b>{{ ratingsscores.overall_score|tofix }}</b>
         <div>综合评价</div>
-        <p>高于周边商家{{ shopheader.float_minimum_order_amount }}%</p>
+        <p>高于周边商家{{ ratingsscores.compare_rating|tofix1 }}%</p>
       </div>
       <div class="overview-col2">
         <div class="overview-line">
@@ -18,7 +18,7 @@
                 <svg><use xlink:href="#rating-star"></use></svg>
                 <svg><use xlink:href="#rating-star"></use></svg>
               </div>
-              <div class="rating-rating">
+              <div class="rating-rating" :style="'width:'+ (ratingsscores.service_score/5)*100 +'%'">
                 <svg><use xlink:href="#rating-star"></use></svg>
                 <svg><use xlink:href="#rating-star"></use></svg>
                 <svg><use xlink:href="#rating-star"></use></svg>
@@ -26,7 +26,7 @@
                 <svg><use xlink:href="#rating-star"></use></svg>
               </div>
             </div>
-            <span>4.2</span>
+            <span>{{ ratingsscores.service_score|tofix }}</span>
           </span>
         </div>
         <div class="overview-line">
@@ -40,7 +40,7 @@
                 <svg><use xlink:href="#rating-star"></use></svg>
                 <svg><use xlink:href="#rating-star"></use></svg>
               </div>
-              <div class="rating-rating">
+              <div class="rating-rating" :style="'width:'+ (ratingsscores.food_score/5)*100 +'%'">
                 <svg><use xlink:href="#rating-star"></use></svg>
                 <svg><use xlink:href="#rating-star"></use></svg>
                 <svg><use xlink:href="#rating-star"></use></svg>
@@ -48,12 +48,12 @@
                 <svg><use xlink:href="#rating-star"></use></svg>
               </div>
             </div>
-            <span>4.5</span>
+            <span>{{ ratingsscores.food_score|tofix }}</span>
           </span>
         </div>
         <div class="overview-line">
           <span>送达时间</span>
-          <span class="overview-small">{{ shopheader.order_lead_time }}分钟</span>
+          <span class="overview-small">{{ ratingsscores.deliver_time }}分钟</span>
         </div>
       </div>
     </div>
@@ -103,19 +103,30 @@
 import { mapState } from 'vuex'
 export default {
   name: 'tab2',
+  filters: {
+    tofix: function (num) {
+      if (num) {
+        return num.toFixed(1)
+      }
+    },
+    tofix1: function (num) {
+      if (num) {
+        return num.toFixed(2) * 100
+      }
+    }
+  },
   mounted () {
-    this.$store.dispatch('ratingstags')
-    this.$store.dispatch('shopheader')
     var id = this.$route.params.id
     this.$store.dispatch('ratings', { id: id, str: '全部' })
+    this.$store.dispatch('ratingsscores', id)
+  },
+  computed: {
+    ...mapState(['ratingstags', 'shopheader', 'ratings', 'ratingsscores'])
   },
   data () {
     return {
       addClass: 0
     }
-  },
-  computed: {
-    ...mapState(['ratingstags', 'shopheader', 'ratings'])
   },
   methods: {
     change (index, str) {

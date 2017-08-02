@@ -1,5 +1,6 @@
 <template>
-  <div class="shop-header">
+  <div>
+  <div class="shop-header" v-for="shopheader in shopheader">
     <div class="shop-header-background" v-if="shopheader.image_path.substr(-3) == 'png'"
     :style="'background-image:url(https://fuss10.elemecdn.com/'+ shopheader.image_path.substr(0,1) + '/' + shopheader.image_path.substr(1,2) + '/' + shopheader.image_path.substr(3) +'.png?imageMogr/format/webp/thumbnail/!40p/blur/50x40/)'"></div>
     <div class="shop-header-background" v-else-if="shopheader.image_path.substr(-3) == 'peg'"
@@ -9,9 +10,8 @@
         <svg><use xlink:href="#arrow-left"></use></svg> 
       </router-link>
     </div>
-    <div class="shop-header-main">
-      <img v-if="shopheader.image_path.substr(-3) == 'png'" :src="'https://fuss10.elemecdn.com/'+ shopheader.image_path.substr(0,1) + '/' + shopheader.image_path.substr(1,2) + '/' + shopheader.image_path.substr(3) +'.png?imageMogr/format/webp/thumbnail/!69x69r/gravity/Center/crop/69x69/'" alt="">
-      <img v-else-if="shopheader.image_path.substr(-3) == 'peg'" :src="'https://fuss10.elemecdn.com/'+ shopheader.image_path.substr(0,1) + '/' + shopheader.image_path.substr(1,2) + '/' + shopheader.image_path.substr(3) +'.jpeg?imageMogr/format/webp/thumbnail/!69x69r/gravity/Center/crop/69x69/'" alt="">
+    <div class="shop-header-main" v-on:click="fage = !fage">
+      <img :src="sub(shopheader.image_path)" alt="">
       <div class="shop-header-content">
         <h2 class="shop-header-shopName">{{ shopheader.name }}</h2>
         <p class="shop-header-delivery">
@@ -64,6 +64,18 @@
         </div>
       </div>
     </transition>
+    <transition name="fage">
+      <div v-if="fage" class="modal-container">
+        <header>
+          <svg v-on:click="fage = !fage"><use xlink:href="#arrow-left"></use></svg>
+          <h1>商家详情</h1>
+        </header>
+        <div class="modal-content">
+
+        </div>
+      </div>
+    </transition>
+  </div>
   </div>
 </template>
 
@@ -72,14 +84,25 @@ import { mapState } from 'vuex'
 export default {
   name: 'header',
   mounted () {
-    this.$store.dispatch('shopheader')
+    var id = this.$route.params.id
+    this.$store.dispatch('shopheader', id)
   },
   computed: {
     ...mapState(['shopheader'])
   },
   data () {
     return {
-      'show': false
+      'show': false,
+      'fage': false
+    }
+  },
+  methods: {
+    sub (e) {
+      if (e.substr(-3) === 'png') {
+        return 'https://fuss10.elemecdn.com/' + e.substr(0, 1) + '/' + e.substr(1, 2) + '/' + e.substr(3) + '.png?imageMogr/format/webp/thumbnail/!69x69r/gravity/Center/crop/69x69/'
+      } else if (e.substr(-3) === 'peg') {
+        return 'https://fuss10.elemecdn.com/' + e.substr(0, 1) + '/' + e.substr(1, 2) + '/' + e.substr(3) + '.jpeg?imageMogr/format/webp/thumbnail/!69x69r/gravity/Center/crop/69x69/'
+      }
     }
   }
 }
@@ -213,6 +236,12 @@ export default {
   .fade-enter, .fade-leave-to {
     opacity: 0
   }
+  .fage-enter-active, .fage-leave-active {
+    transition: opacity .5s
+  }
+  .fage-enter, .fage-leave-to {
+    opacity: 0
+  }
   .bulletin-modal-container{
     position: fixed;
     z-index: 999;
@@ -315,6 +344,46 @@ export default {
         height: 100%;
         transform: scale(.3);
       }
+    }
+  }
+  .modal-container{
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    overflow: auto;
+    z-index: 100;
+    background-color: red;
+    header{
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      text-align: center;
+      background-color: #2196f3;
+      color: #fff;
+      height: px2rem(88);
+      line-height: px2rem(88);
+      z-index: 999;
+      svg{
+        position: absolute;
+        width: px2rem(60);
+        height: px2rem(40);
+        left: px2rem(8);
+        top: px2rem(24);
+        fill: #fff;
+      }
+      h1{
+        font-size: px2rem(40);
+        font-weight: 400;
+      }
+    }
+    .modal-content{
+      padding-top: px2rem(88);
+      height: 100%;
+      box-sizing: border-box;
+      overflow: auto;
     }
   }
 </style>

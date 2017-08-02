@@ -62,7 +62,7 @@ export default new Vuex.Store({
       state.ratingstags = _this.ratingstags
     },
     RATINGS: function (state) {
-      state.ratings = state.ratings.concat(_this.ratings)
+      state.ratings = _this.ratings
     }
   },
   // getters state 的计算属性
@@ -132,8 +132,8 @@ export default new Vuex.Store({
       })
       offset += 20
     },
-    shopheader: function (context) {
-      Vue.http.get('http://localhost:3000/shop/header').then(function (res) {
+    shopheader: function (context, id) {
+      Vue.http.get('http://localhost:3000/shop/header?id=' + id).then(function (res) {
         _this.shopheader = res.body
         context.commit('SHOPHEADER')
       }, function (err) {
@@ -148,8 +148,8 @@ export default new Vuex.Store({
         console.log(err)
       })
     },
-    shoptab1: function (context) {
-      Vue.http.get('http://localhost:3000/shop/tab1').then(function (res) {
+    shoptab1: function (context, id) {
+      Vue.http.get('http://localhost:3000/shop/tab1?id=' + id).then(function (res) {
         _this.shoptab1 = res.body
         console.log(_this.shoptab1)
         context.commit('SHOPTAB1')
@@ -168,25 +168,30 @@ export default new Vuex.Store({
     filterkinds: function (context) {
       Vue.http.get('http://localhost:3000/filter/kinds').then(function (res) {
         _this.filterkinds = res.body
-        console.log(res.body)
         context.commit('FILTERKINDS')
       }, function (err) {
         console.log(err)
       })
     },
-    ratings: function (context) {
-      Vue.http.get('http://localhost:3000/ratings', {
-        params: {
-          offset: offset
-        }
-      }).then(function (res) {
+    ratingstags: function (context, id) {
+      console.log(id)
+      Vue.http.get('http://localhost:3000/ratings/tags?id=' + id).then(function (res) {
+        _this.ratingstags = res.body
+        context.commit('RATINGSTAGS')
+      }, function (err) {
+        console.log(err)
+      })
+    },
+    ratings: function (context, obj) {
+      var id = obj.id
+      var str = obj.str
+      console.log(str)
+      Vue.http.get('http://localhost:3000/ratings?id=' + id + '&str=' + str).then(function (res) {
         _this.ratings = res.body
-        console.log(_this.ratings)
         context.commit('RATINGS')
       }, function (err) {
         console.log(err)
       })
-      offset += 10
     }
   }
 })

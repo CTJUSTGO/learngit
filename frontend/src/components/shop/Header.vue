@@ -57,6 +57,11 @@
           <i>{{ item.icon_name }}</i>
           <span>{{ item.description }}</span>
         </p>
+        <h3><span>商家公告</span></h3>
+        <div>{{ shopheader.promotion_info }}</div>
+        <div class="bulletin-modal-close" v-on:click="show = !show">
+          <svg><use xlink:href="#res-x"></use></svg>
+        </div>
       </div>
     </transition>
   </div>
@@ -292,6 +297,23 @@ export default {
         text-align: center;
         border: 1px solid;
         border-radius: px2rem(3);
+      }
+    }
+    .bulletin-modal-close{
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: px2rem(50);
+      margin: auto;
+      width: px2rem(88);
+      height: px2rem(88);
+      border: 1px solid #888;
+      border-radius: 50%;
+      svg{
+        fill: #fff;
+        width: 100%;
+        height: 100%;
+        transform: scale(.3);
       }
     }
   }

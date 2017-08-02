@@ -60,10 +60,10 @@
     <section class="index-rateDetail">
       <div class="index-tagBlock">
         <ul>
-          <li v-for="(item,index) in ratingstags" v-on:click="change">{{ item.name }}({{ item.count }})</li>
+          <li :class="{'tags-unsatisfied':item.unsatisfied,'checked':index===addClass,'checked-unsatisfied':item.unsatisfied&&index===addClass}" v-on:click="change(index, item.name)" v-for="(item,index) in ratingstags">{{ item.name }}({{ item.count }})</li>
         </ul>
       </div>
-      <ul v-infinite-scroll="Tab2" infinite-scroll-disabled="tab2" infinite-scroll-distance="80">
+      <ul>
         <li v-for="(item,index) in ratings" class="index-comment">
           <div class="comment-block-container">
             <small>{{ item.rated_at }}</small>
@@ -108,24 +108,20 @@ export default {
     this.$store.dispatch('shopheader')
     this.$store.dispatch('ratings')
   },
+  data () {
+    return {
+      addClass: 0
+    }
+  },
   computed: {
     ...mapState(['ratingstags', 'shopheader', 'ratings'])
   },
   methods: {
-    change (e) {
-      e.target.style.color = '#fff'
-      e.target.style.backgroundColor = '#3190e8'
-    },
-    Tab2 () {
-      var _this = this
-      if (_this.tab2) {
-        return false
-      }
-      _this.tab2 = true
-      setTimeout(() => {
-        _this.$store.dispatch('ratings')
-        _this.tab2 = false
-      }, 50)
+    change (index, str) {
+      this.addClass = index
+      var id = this.$route.params.id
+      this.$store.dispatch('ratings', { id: id, str: str })
+      console.log(str)
     }
   }
 }
@@ -250,6 +246,17 @@ export default {
             background-color: #ebf5ff;
             font-size:px2rem(27);
             line-height:px2rem(32); 
+        }
+        .tags-unsatisfied {
+            color: #aaa;
+            background-color: #f5f5f5;
+        }
+        .checked {
+            color: #fff;
+            background-color: #3190e8;
+        }
+        .checked-unsatisfied {
+            background-color: #ccc!important;
         }
       }	
     }

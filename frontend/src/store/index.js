@@ -10,7 +10,7 @@ var offset = 0
 export default new Vuex.Store({
   state: {
     homeinput: '搜索商家、商品',
-    weather: '',
+    weather: [],
     place: '',
     hotsearch: '',
     banner: {
@@ -29,7 +29,7 @@ export default new Vuex.Store({
   },
   mutations: {
     WEATHER: function (state) {
-      state.weather = _this.weather
+      state.weather.push(_this.weather)
     },
     HOTSEARCH: function (state) {
       state.hotsearch = _this.hotsearch
@@ -125,6 +125,9 @@ export default new Vuex.Store({
           offset: offset
         }
       }).then(function (res) {
+        for (var i = 0; i < res.body.length; i++) {
+          res.body[i].isShow = false
+        }
         _this.homeprolist = res.body
         context.commit('HOMEPROLIST')
       }, function (err) {
@@ -187,6 +190,21 @@ export default new Vuex.Store({
         console.log(err)
       })
       offset += 10
+    },
+    login: function (context, users) {
+      var username = users.username
+      var password = users.userpwd
+      Vue.http.get('http://10.20.152.6:3000/users', {
+        params: {
+          name: username,
+          password: password
+        }
+      }).then(function (res) {
+        alert(res.data.msg)
+        window.location.href = '#/user'
+      }, function (err) {
+        console.log(err)
+      })
     }
   }
 })

@@ -10,14 +10,13 @@
           <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#arrow"></use>
         </svg>
       </div>
-      <div class="my-header-t-r">
+      <div class="my-header-t-r" v-for="item in weather">
         <div class="my-header-t-r-l">
-          <span>{{ weather.temperature }}°</span>
-          <span>{{ weather.description }}</span>
+          <span>{{ item.temperature + '°' }}</span>
+          <span>{{ item.description }}</span>
         </div>
         <div class="my-header-t-r-r">
-          <img v-if="weather.image_hash.substr(-3) == 'png'" :src="'https://fuss10.elemecdn.com/'+ weather.image_hash.substr(0,1) + '/' + weather.image_hash.substr(1,2) + '/' +weather.image_hash.substr(3) +'.png?imageMogr/format/webp/thumbnail/!69x69r/gravity/Center/crop/69x69/'" alt="">
-          <img v-else-if="weather.image_hash.substr(-3) == 'peg'" :src="'https://fuss10.elemecdn.com/'+ weather.image_hash.substr(0,1) + '/' + weather.image_hash.substr(1,2) + '/' +weather.image_hash.substr(3) +'.jpeg?imageMogr/format/webp/thumbnail/!69x69r/gravity/Center/crop/69x69/'" alt="">
+          <img :src="sub(item.image_hash)" alt="">
         </div>
       </div>
     </div>
@@ -42,6 +41,15 @@ export default {
   },
   computed: {
     ...mapState(['weather', 'place', 'hotsearch', 'homeinput'])
+  },
+  methods: {
+    sub (e) {
+      if (e.substr(-3) === 'png') {
+        return 'https://fuss10.elemecdn.com/' + e.substr(0, 1) + '/' + e.substr(1, 2) + '/' + e.substr(3) + '.png?imageMogr/format/webp/thumbnail/!69x69r/gravity/Center/crop/69x69/'
+      } else if (e.substr(-3) === 'peg') {
+        return 'https://fuss10.elemecdn.com/' + e.substr(0, 1) + '/' + e.substr(1, 2) + '/' + e.substr(3) + '.jpeg?imageMogr/format/webp/thumbnail/!69x69r/gravity/Center/crop/69x69/'
+      }
+    }
   }
 }
 </script>

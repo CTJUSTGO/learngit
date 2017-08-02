@@ -1,13 +1,8 @@
 <template>
   <div class="loadmore">
     <h3 class="index-title">推荐商家</h3>
-<<<<<<< HEAD
     <ul v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="80">
       <li class="pro-list" :key="index" v-for="(item,index) in homeprolist">
-=======
-    <ul v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="0">
-      <li class="pro-list" key="index" v-for="(item,index) in homeprolist">
->>>>>>> 4be4e176e67a77b42c955f040839b9c2823e5419
         <router-link :to="'/shop/'+item.id">
           <div class="pro-list-l">
             <img :src="sub(item.image_path)" alt="" />

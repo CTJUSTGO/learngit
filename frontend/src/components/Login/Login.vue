@@ -12,8 +12,8 @@
         </g>
       </svg>
       <p class="user-login">用户登录</p>
-      <input class="user-input" type="text" placeholder="手机号" v-model="username">
-      <input class="user-input" type="password" placeholder="密码" v-model="userpwd">
+      <input class="user-input" type="text" placeholder="手机号" v-model="users.username">
+      <input class="user-input" type="password" placeholder="密码" v-model="users.userpwd">
       <p class="tips">
         温馨提示：未注册饿了么帐号的手机号，登录时将自动注册，且代表您已同意<span>《用户服务协议》</span>
       </p>
@@ -27,18 +27,20 @@ export default {
   name: 'Login',
   data () {
     return {
-      username: '',
-      userpwd: ''
+      users: {
+        username: '',
+        userpwd: ''
+      }
     }
   },
   methods: {
     login () {
-      if (!/^((13[0-9])|(14[5|7])|(15([0-3]|[5-9]))|(18[05-9]))\d{8}$/.test(this.username)) {
+      if (!/^((13[0-9])|(14[5|7])|(15([0-3]|[5-9]))|(18[05-9]))\d{8}$/.test(this.users.username)) {
         console.log('账号格式错误')
-      } else if (!/^\S{6,16}$/.test(this.userpwd)) {
+      } else if (!/^\S{6,16}$/.test(this.users.userpwd)) {
         console.log('密码长度为6-16位')
       } else {
-        console.log('登录成功')
+        this.$store.dispatch('login', this.users)
       }
     }
   }

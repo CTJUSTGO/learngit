@@ -1,12 +1,16 @@
 <template>
   <div class="loadmore">
     <h3 class="index-title">推荐商家</h3>
+<<<<<<< HEAD
     <ul v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="80">
       <li class="pro-list" :key="index" v-for="(item,index) in homeprolist">
+=======
+    <ul v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="0">
+      <li class="pro-list" key="index" v-for="(item,index) in homeprolist">
+>>>>>>> 4be4e176e67a77b42c955f040839b9c2823e5419
         <router-link :to="'/shop/'+item.id">
           <div class="pro-list-l">
-            <img v-if="item.image_path.substr(-3) == 'peg'" :src="'https://fuss10.elemecdn.com/'+ item.image_path.substr(0,1) +'/' + item.image_path.substr(1,2) + '/' + item.image_path.substr(3) + '.jpeg?imageMogr/format/webp/thumbnail/!120x120r/gravity/Center/crop/120x120/'" alt="" />
-            <img v-else-if="item.image_path.substr(-3) == 'png'" :src="'https://fuss10.elemecdn.com/'+ item.image_path.substr(0,1) +'/' + item.image_path.substr(1,2) + '/' + item.image_path.substr(3) + '.png?imageMogr/format/webp/thumbnail/!120x120r/gravity/Center/crop/120x120/'" alt="" />
+            <img :src="sub(item.image_path)" alt="" />
           </div>
         </router-link>
           <div class="pro-list-r">
@@ -54,12 +58,12 @@
             </router-link>
             <div class="pro-list-actor">
               <div class="pro-list-actor-list">
-                <div v-if="index < 2 || isShow" class="pro-list-actor-list-con" v-for="(ii,index) in item.activities">
+                <div v-if="index < 2 || item.isShow" class="pro-list-actor-list-con" v-for="(ii,index) in item.activities">
                   <i :style="'background-color: #' + ii.icon_color + ';color: rgb(255, 255, 255); border-color: #' + ii.icon_color + ';'">{{ ii.icon_name }}</i>
                   <span>{{ ii.description }}</span>
                 </div>
               </div>
-              <div v-if="item.activities.length > 2" class="pro-list-actor-btn" @click="addClick">
+              <div v-if="item.activities.length > 2" class="pro-list-actor-btn" @click="addClick(index)">
                 {{ item.activities.length }}个活动
               </div>
             </div>
@@ -74,8 +78,7 @@ export default {
   name: 'loadmore',
   data () {
     return {
-      'rating': 5,
-      'isShow': false
+      'rating': 5
     }
   },
   mounted () {
@@ -96,8 +99,15 @@ export default {
         _this.loading = false
       }, 50)
     },
-    addClick () {
-      this.isShow = !this.isShow
+    addClick (i) {
+      this.homeprolist[i].isShow = !this.homeprolist[i].isShow
+    },
+    sub (e) {
+      if (e.substr(-3) === 'png') {
+        return 'https://fuss10.elemecdn.com/' + e.substr(0, 1) + '/' + e.substr(1, 2) + '/' + e.substr(3) + '.png?imageMogr/format/webp/thumbnail/!120x120r/gravity/Center/crop/120x120/'
+      } else if (e.substr(-3) === 'peg') {
+        return 'https://fuss10.elemecdn.com/' + e.substr(0, 1) + '/' + e.substr(1, 2) + '/' + e.substr(3) + '.jpeg?imageMogr/format/webp/thumbnail/!120x120r/gravity/Center/crop/120x120/'
+      }
     }
   }
 }

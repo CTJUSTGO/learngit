@@ -10,8 +10,7 @@
         href="#" :key="indexx"
         v-for="(item,indexx) in banner.bannerPage[index]"
         >
-        <img v-if="item.image_hash.substr(-3) == 'peg'" class="banner-list-img" :src="'https://fuss10.elemecdn.com/' + item.image_hash.substr(0,1)+ '/' + item.image_hash.substr(1,2) + '/' + item.image_hash.substr(3) + '.jpeg?imageMogr/format/webp/thumbnail/!90x90r/gravity/Center/crop/90x90/'" alt="" />
-        <img v-else-if="item.image_hash.substr(-3) == 'png'" class="banner-list-img" :src="'https://fuss10.elemecdn.com/' + item.image_hash.substr(0,1)+ '/' + item.image_hash.substr(1,2) + '/' + item.image_hash.substr(3) + '.png?imageMogr/format/webp/thumbnail/!90x90r/gravity/Center/crop/90x90/'" alt="" />
+        <img class="banner-list-img" :src="sub(item.image_hash)" alt="" />
         <span class="title">{{ item.name }}</span>
       </a>
     </mt-swipe-item>
@@ -26,6 +25,15 @@ export default {
   },
   computed: {
     ...mapState(['banner'])
+  },
+  methods: {
+    sub (e) {
+      if (e.substr(-3) === 'png') {
+        return 'https://fuss10.elemecdn.com/' + e.substr(0, 1) + '/' + e.substr(1, 2) + '/' + e.substr(3) + '.png?imageMogr/format/webp/thumbnail/!90x90r/gravity/Center/crop/90x90/'
+      } else if (e.substr(-3) === 'peg') {
+        return 'https://fuss10.elemecdn.com/' + e.substr(0, 1) + '/' + e.substr(1, 2) + '/' + e.substr(3) + '.jpeg?imageMogr/format/webp/thumbnail/!90x90r/gravity/Center/crop/90x90/'
+      }
+    }
   }
 }
 </script>

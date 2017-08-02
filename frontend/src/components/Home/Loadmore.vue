@@ -2,7 +2,7 @@
   <div class="loadmore">
     <h3 class="index-title">推荐商家</h3>
     <ul v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="80">
-      <li class="pro-list" key="index" v-for="(item,index) in homeprolist">
+      <li class="pro-list" :key="index" v-for="(item,index) in homeprolist">
         <router-link :to="'/shop/'+item.id">
           <div class="pro-list-l">
             <img v-if="item.image_path.substr(-3) == 'peg'" :src="'https://fuss10.elemecdn.com/'+ item.image_path.substr(0,1) +'/' + item.image_path.substr(1,2) + '/' + item.image_path.substr(3) + '.jpeg?imageMogr/format/webp/thumbnail/!120x120r/gravity/Center/crop/120x120/'" alt="" />
@@ -15,7 +15,7 @@
               <div v-if="item.is_premium" class="pro-list-r-t-l-before">{{ item.name }}</div>
               <div v-else class="pro-list-r-t-l">{{ item.name }}</div>
               <div class="pro-list-r-t-r">
-                <i key="nindex" v-if="item.supports" v-for="(n,nindex) in item.supports" class="title-logo">{{ n.icon_name }}</i>
+                <i :key="nindex" v-if="item.supports" v-for="(n,nindex) in item.supports" class="title-logo">{{ n.icon_name }}</i>
               </div>
             </h3>
             <div class="pro-list-r-m">

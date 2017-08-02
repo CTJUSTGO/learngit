@@ -106,7 +106,8 @@ export default {
   mounted () {
     this.$store.dispatch('ratingstags')
     this.$store.dispatch('shopheader')
-    this.$store.dispatch('ratings')
+    var id = this.$route.params.id
+    this.$store.dispatch('ratings', { id: id, str: '全部' })
   },
   data () {
     return {
@@ -121,7 +122,6 @@ export default {
       this.addClass = index
       var id = this.$route.params.id
       this.$store.dispatch('ratings', { id: id, str: str })
-      console.log(str)
     }
   }
 }

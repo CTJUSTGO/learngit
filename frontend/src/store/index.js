@@ -174,7 +174,6 @@ export default new Vuex.Store({
       })
     },
     ratingstags: function (context, id) {
-      console.log(id)
       Vue.http.get('http://localhost:3000/ratings/tags?id=' + id).then(function (res) {
         _this.ratingstags = res.body
         context.commit('RATINGSTAGS')
@@ -185,7 +184,6 @@ export default new Vuex.Store({
     ratings: function (context, obj) {
       var id = obj.id
       var str = obj.str
-      console.log(str)
       Vue.http.get('http://localhost:3000/ratings?id=' + id + '&str=' + str).then(function (res) {
         _this.ratings = res.body
         context.commit('RATINGS')

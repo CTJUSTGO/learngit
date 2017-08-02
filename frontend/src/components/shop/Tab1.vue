@@ -50,8 +50,10 @@
 							<p class="bottomP1">￥0</p>
 							<p class="bottomP2">配送费￥{{ shopheader.float_delivery_fee }}</p>
 						</div>
-						<a href="javascript:" class="bottomNav2" v-if="shopheader.float_minimum_order_amount">¥{{ shopheader.float_minimum_order_amount }}起送</a>
-            <a href="javascript:" class="bottomNav2" v-if="!shopheader.float_minimum_order_amount">¥0起送</a>
+            <div>
+						  <a href="javascript:" class="bottomNav2" v-if="shopheader.float_minimum_order_amount">¥{{ shopheader.float_minimum_order_amount }}起送</a>
+              <a href="javascript:" class="bottomNav2" v-if="!shopheader.float_minimum_order_amount">¥0起送</a>
+            </div>
           </div>
 				</div>
     </div>

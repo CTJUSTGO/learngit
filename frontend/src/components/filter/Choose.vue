@@ -29,7 +29,7 @@
           </li>
         </ul>
         <ul class="second">
-          <li v-for="(item,index) in shopList" :key="index">
+          <li v-for="(item,index) in shopList" :key="index" @click="getids(item.id)" :title="item.id">
             <span>{{item.name}}</span>
             <span>{{shopList[index].count}}</span>
           </li>
@@ -136,6 +136,11 @@ export default {
         this.shopList = this.filter.kinds[index].sub_categories
         console.log(this.shopList)
       }
+    },
+    getids: function (index) {
+      this.$store.dispatch('getids', index)
+      this.$store.dispatch('filter')
+      this.$store.dispatch('filterlist')
     },
     openf: function () {
       this.show1 = !this.show1

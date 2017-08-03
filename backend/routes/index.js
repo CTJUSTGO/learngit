@@ -130,6 +130,19 @@ router.get('/ratings/tags',function(req,res,next){
   })
 });
 
+router.get('/ratings/scores',function(req,res,next){
+  var id = req.query.id;
+  https.get('https://mainsite-restapi.ele.me/ugc/v2/restaurants/'+id+'/ratings/scores',function(response){
+    var data = ''
+    response.on('data', function (chunk) {
+      data += chunk;
+    })
+    response.on('end', function () {
+      res.send(data);
+    })
+  })
+});
+
 router.get('/ratings',function(req,res,next){
   var id = req.query.id;
   var str = encodeURIComponent(req.query.str);

@@ -5,15 +5,16 @@
       :key="index"
       v-for="(item,index) in banner.bannerPage"
       >
-      <router-link
+      <a
         class="banner-list-a"
         :key="indexx"
         v-for="(ii,indexx) in banner.bannerPage[index]"
-        :to="'/filter/' + ii.id"
+        @click="changet(ii.name)"
+        href="#/filter"
         >
         <img class="banner-list-img" :src="sub(ii.image_hash)" alt="" />
         <span class="title">{{ ii.name }}</span>
-      </router-link>
+      </a>
     </mt-swipe-item>
   </mt-swipe>
 </template>
@@ -28,6 +29,10 @@ export default {
     ...mapState(['banner'])
   },
   methods: {
+    changet: function (title) {
+      this.$store.dispatch('changet', title)
+      console.log(title)
+    },
     sub (e) {
       if (e.substr(-3) === 'png') {
         return 'https://fuss10.elemecdn.com/' + e.substr(0, 1) + '/' + e.substr(1, 2) + '/' + e.substr(3) + '.png?imageMogr/format/webp/thumbnail/!90x90r/gravity/Center/crop/90x90/'

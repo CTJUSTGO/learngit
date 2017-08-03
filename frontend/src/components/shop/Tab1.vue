@@ -2,7 +2,7 @@
   <div class="menuview">
     <div class="menuview1">
       <ul class="menucategory-29kyE">
-        <li v-for="(item,index) in shoptab1">
+        <li v-for="(item,index) in shoptab1" v-on:click="">
           <img v-if="item.icon_url" :src="'https://fuss10.elemecdn.com/'+ item.icon_url.substr(0,1) + '/' + item.icon_url.substr(1,2) + '/' + item.icon_url.substr(3) +'.jpeg?imageMogr/format/webp/thumbnail/18x/'" />
           <span>{{ item.name }}</span>
         </li>
@@ -17,8 +17,7 @@
             </dt>
             <dd v-for="val in item.foods">
               <span class="foodimg">
-                <img v-if="val.image_path.substr(-3) == 'png'" :src="'https://fuss10.elemecdn.com/'+ val.image_path.substr(0,1) + '/' + val.image_path.substr(1,2) + '/' + val.image_path.substr(3) +'.png?imageMogr/format/webp/thumbnail/!140x140r/gravity/Center/crop/140x140/'" alt="">
-                <img v-else-if="val.image_path.substr(-3) == 'peg'" :src="'https://fuss10.elemecdn.com/'+ val.image_path.substr(0,1) + '/' + val.image_path.substr(1,2) + '/' + val.image_path.substr(3) +'.jpeg?imageMogr/format/webp/thumbnail/!140x140r/gravity/Center/crop/140x140/'" alt="">
+                <img :src="val.image_path|img" alt="" v-if="val.image_path">
               </span>
               <section class="foodinfo">
                 <h3>
@@ -35,8 +34,10 @@
                   <span v-if="val.specfoods.length>1" class="foodprice-lowest">起</span>                  
                 </strong>
                 <div class="cartbutton" v-if="val.specfoods.length>1">选规格</div>
-                <div v-else-if="val.specfoods.length=1">
-                  <svg><use xlink:href="#cart-minus"></use></svg>
+                <div v-else-if="val.specfoods.length=1" class="cartbutton1">
+                  <svg v-if="counter"><use xlink:href="#cart-add" v-on:click="counter-=1"></use></svg>
+                  <span v-if="counter">{{counter}}</span>
+                  <svg v-on:click="counter+=1"><use xlink:href="#cart-minus"></use></svg>
                 </div>
               </section>
             </dd>
@@ -48,11 +49,10 @@
 						<span class="gwc"></span>
 						<div class="bottomNav1">
 							<p class="bottomP1">￥0</p>
-							<p class="bottomP2">配送费￥{{ shopheader.float_delivery_fee }}</p>
+							<p class="bottomP2" v-for="shopheader in shopheader">{{ shopheader.piecewise_agent_fee.tips }}</p>
 						</div>
             <div>
-						  <a href="javascript:" class="bottomNav2" v-if="shopheader.float_minimum_order_amount">¥{{ shopheader.float_minimum_order_amount }}起送</a>
-              <a href="javascript:" class="bottomNav2" v-if="!shopheader.float_minimum_order_amount">¥0起送</a>
+						  <a href="javascript:" class="bottomNav2" v-for="shopheader in shopheader">¥{{ shopheader.float_minimum_order_amount }}起送</a>
             </div>
           </div>
 				</div>
@@ -65,11 +65,26 @@ import { mapState } from 'vuex'
 export default {
   name: 'tab1',
   mounted () {
-    this.$store.dispatch('shoptab1')
-    this.$store.dispatch('shopheader')
+    var id = this.$route.params.id
+    this.$store.dispatch('shoptab1', id)
+    this.$store.dispatch('shopheader', id)
   },
   computed: {
     ...mapState(['shoptab1', 'shopheader'])
+  },
+  filters: {
+    img: function (img) {
+      if (img.substr(-3) === 'png') {
+        return 'https://fuss10.elemecdn.com/' + img.substr(0, 1) + '/' + img.substr(1, 2) + '/' + img.substr(3) + '.png?imageMogr/format/webp/thumbnail/!140x140r/gravity/Center/crop/140x140/'
+      } else if (img.substr(-3) === 'peg') {
+        return 'https://fuss10.elemecdn.com/' + img.substr(0, 1) + '/' + img.substr(1, 2) + '/' + img.substr(3) + '.jpeg?imageMogr/format/webp/thumbnail/!140x140r/gravity/Center/crop/140x140/'
+      }
+    }
+  },
+  data () {
+    return {
+      counter: 0
+    }
   }
 }
 </script>
@@ -222,14 +237,24 @@ export default {
               border-radius: px2rem(26);
               line-height: px2rem(50);
             }
-            svg{
+            .cartbutton1{
               position: absolute;
               right: 0;
               bottom: -px2rem(5);
-              width: px2rem(40);
-              height: px2rem(40);
-              vertical-align: middle;
-              fill: #3190e8;
+              svg{
+                width: px2rem(41);
+                height: px2rem(41);
+                vertical-align: middle;
+                fill: #3190e8;
+              }
+              span{
+                text-align: center;
+                color: #666;
+                font-size: px2rem(28);
+                min-width: px2rem(30);
+                max-width: px2rem(56);
+                overflow: hidden;
+              }
             }
           }
         }
@@ -286,7 +311,6 @@ export default {
 					font-size:px2rem(32);
 					background-color: #535356;
 				}
-
 			}
 		}
   }

@@ -29,7 +29,7 @@ export default new Router({
       component: Shop
     },
     {
-      path: '/filter/:id',
+      path: '/filter',
       name: 'Filter',
       component: Filter
     },

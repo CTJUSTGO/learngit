@@ -78,7 +78,7 @@ export default {
     }
   },
   mounted () {
-
+    this.$store.dispatch('filter')
   },
   computed: {
     ...mapState(['homeprolist'])

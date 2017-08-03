@@ -2,9 +2,9 @@
     <div class="index-container">
     <div class="overview-container">
       <div class="overview-col1">
-        <b>{{ shopheader.rating }}</b>
+        <b>{{ ratingsscores.overall_score|tofix }}</b>
         <div>综合评价</div>
-        <p>高于周边商家{{ shopheader.float_minimum_order_amount }}%</p>
+        <p>高于周边商家{{ ratingsscores.compare_rating|tofix1 }}%</p>
       </div>
       <div class="overview-col2">
         <div class="overview-line">
@@ -18,7 +18,7 @@
                 <svg><use xlink:href="#rating-star"></use></svg>
                 <svg><use xlink:href="#rating-star"></use></svg>
               </div>
-              <div class="rating-rating">
+              <div class="rating-rating" :style="'width:'+ (ratingsscores.service_score/5)*100 +'%'">
                 <svg><use xlink:href="#rating-star"></use></svg>
                 <svg><use xlink:href="#rating-star"></use></svg>
                 <svg><use xlink:href="#rating-star"></use></svg>
@@ -26,7 +26,7 @@
                 <svg><use xlink:href="#rating-star"></use></svg>
               </div>
             </div>
-            <span>4.2</span>
+            <span>{{ ratingsscores.service_score|tofix }}</span>
           </span>
         </div>
         <div class="overview-line">
@@ -40,7 +40,7 @@
                 <svg><use xlink:href="#rating-star"></use></svg>
                 <svg><use xlink:href="#rating-star"></use></svg>
               </div>
-              <div class="rating-rating">
+              <div class="rating-rating" :style="'width:'+ (ratingsscores.food_score/5)*100 +'%'">
                 <svg><use xlink:href="#rating-star"></use></svg>
                 <svg><use xlink:href="#rating-star"></use></svg>
                 <svg><use xlink:href="#rating-star"></use></svg>
@@ -48,12 +48,12 @@
                 <svg><use xlink:href="#rating-star"></use></svg>
               </div>
             </div>
-            <span>4.5</span>
+            <span>{{ ratingsscores.food_score|tofix }}</span>
           </span>
         </div>
         <div class="overview-line">
           <span>送达时间</span>
-          <span class="overview-small">{{ shopheader.order_lead_time }}分钟</span>
+          <span class="overview-small">{{ ratingsscores.deliver_time }}分钟</span>
         </div>
       </div>
     </div>
@@ -67,7 +67,7 @@
         <li v-for="(item,index) in ratings" class="index-comment">
           <div class="comment-block-container">
             <small>{{ item.rated_at }}</small>
-            <img src="https://fuss10.elemecdn.com/f/2e/20a4300d40b97e98a5889591fb1f2jpeg.jpeg?imageMogr/format/webp/thumbnail/!60x60r/gravity/Center/crop/60x60/"/>
+            <img class="img" src="https://fuss10.elemecdn.com/f/2e/20a4300d40b97e98a5889591fb1f2jpeg.jpeg?imageMogr/format/webp/thumbnail/!60x60r/gravity/Center/crop/60x60/"/>
             <div class="comment-block-content">
               <h3>{{ item.username }}</h3>
               <div class="rating-wrapper">
@@ -88,6 +88,11 @@
               </div>
               <span class="comment-block-rating">{{ item.time_spent_desc }}</span>
               <div class="comment-block-reply" v-if="item.reply_text">商家回复：{{ item.reply_text }}</div>
+              <ul class="photos">
+                <li v-for="val in item.item_ratings" v-if="val.image_hash">
+                  <img :src="val.image_hash|img"/>
+                </li>
+              </ul>
               <ul class="comment-block-foods">
                 <li v-for="(val,key) in item.item_ratings">{{ val.food_name }}</li>
               </ul>
@@ -103,19 +108,37 @@
 import { mapState } from 'vuex'
 export default {
   name: 'tab2',
+  filters: {
+    tofix: function (num) {
+      if (num) {
+        return num.toFixed(1)
+      }
+    },
+    tofix1: function (num) {
+      if (num) {
+        return num.toFixed(2) * 100
+      }
+    },
+    img: function (img) {
+      if (img.substr(-3) === 'png') {
+        return 'https://fuss10.elemecdn.com/' + img.substr(0, 1) + '/' + img.substr(1, 2) + '/' + img.substr(3) + '.png?imageMogr/format/webp/thumbnail/!142x142r/gravity/Center/crop/142x142/'
+      } else if (img.substr(-3) === 'peg') {
+        return 'https://fuss10.elemecdn.com/' + img.substr(0, 1) + '/' + img.substr(1, 2) + '/' + img.substr(3) + '.jpeg?imageMogr/format/webp/thumbnail/!142x142r/gravity/Center/crop/142x142/'
+      }
+    }
+  },
   mounted () {
-    this.$store.dispatch('ratingstags')
-    this.$store.dispatch('shopheader')
     var id = this.$route.params.id
     this.$store.dispatch('ratings', { id: id, str: '全部' })
+    this.$store.dispatch('ratingsscores', id)
+  },
+  computed: {
+    ...mapState(['ratingstags', 'shopheader', 'ratings', 'ratingsscores'])
   },
   data () {
     return {
       addClass: 0
     }
-  },
-  computed: {
-    ...mapState(['ratingstags', 'shopheader', 'ratings'])
   },
   methods: {
     change (index, str) {
@@ -274,7 +297,7 @@ export default {
             font-size: px2rem(24);
             color: #999;
           }
-          img{
+          .img{
             display: block;
             position: absolute;
             top: 0;
@@ -335,6 +358,17 @@ export default {
               background: #f3f3f3;
               border-radius: px2rem(8);
               color: #333;
+            }
+            .photos{
+              li{
+                display: inline-block;
+                margin: px2rem(10);
+                img{
+                  display: block;
+                  width: px2rem(142);
+                  height: px2rem(142);
+                }
+              }
             }
             .comment-block-foods{
               li{

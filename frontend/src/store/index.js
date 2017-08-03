@@ -7,11 +7,12 @@ Vue.use(VueResource)
 var _this = this
 var offset = 0
 var order = 0
-
+var ids = -100
 export default new Vuex.Store({
   state: {
     homeinput: '搜索商家、商品',
     weather: '',
+    titlehead: '',
     place: '',
     hotsearch: '',
     banner: {
@@ -27,7 +28,8 @@ export default new Vuex.Store({
     shoptab1: [],
     ratingstags: [],
     ratings: [],
-    username: ''
+    username: '',
+    ratingsscores: []
   },
   mutations: {
     WEATHER: function (state) {
@@ -52,7 +54,7 @@ export default new Vuex.Store({
       state.homeprolist = state.homeprolist.concat(_this.homeprolist)
     },
     SHOPHEADER: function (state) {
-      state.shopheader = _this.shopheader
+      state.shopheader = [_this.shopheader]
     },
     FINDGIFT: function (state) {
       state.giftList = _this.giftList
@@ -68,6 +70,9 @@ export default new Vuex.Store({
     },
     RATINGSTAGS: function (state) {
       state.ratingstags = _this.ratingstags
+    },
+    RATINGSSCORES: function (state) {
+      state.ratingsscores = _this.ratingsscores
     },
     RATINGS: function (state) {
       state.ratings = _this.ratings
@@ -165,7 +170,6 @@ export default new Vuex.Store({
     shoptab1: function (context, id) {
       Vue.http.get('http://localhost:3000/shop/tab1?id=' + id).then(function (res) {
         _this.shoptab1 = res.body
-        console.log(_this.shoptab1)
         context.commit('SHOPTAB1')
       }, function (err) {
         console.log(err)
@@ -182,8 +186,6 @@ export default new Vuex.Store({
     filterkinds: function (context) {
       Vue.http.get('http://localhost:3000/filter/kinds').then(function (res) {
         _this.filterkinds = res.body
-        console.log(_this)
-        console.log(context)
         context.commit('FILTERKINDS')
       }, function (err) {
         console.log(err)
@@ -193,6 +195,14 @@ export default new Vuex.Store({
       Vue.http.get('http://localhost:3000/ratings/tags?id=' + id).then(function (res) {
         _this.ratingstags = res.body
         context.commit('RATINGSTAGS')
+      }, function (err) {
+        console.log(err)
+      })
+    },
+    ratingsscores: function (context, id) {
+      Vue.http.get('http://localhost:3000/ratings/scores?id=' + id).then(function (res) {
+        _this.ratingsscores = res.body
+        context.commit('RATINGSSCORES')
       }, function (err) {
         console.log(err)
       })
@@ -231,7 +241,8 @@ export default new Vuex.Store({
       Vue.http.get('http://localhost:3000/filter/select', {
         params: {
           offset: offset,
-          order: order
+          order: order,
+          ids: ids
         }
       }).then(function (res) {
         for (var i = 0; i < res.body.length; i++) {
@@ -250,7 +261,12 @@ export default new Vuex.Store({
     },
     sort: function (context, id) {
       order = id
-      console.log(context)
+    },
+    getids: function (context, id) {
+      ids = id
+    },
+    changet: function (context, title) {
+      context.state.titlehead = title
     }
   }
 })

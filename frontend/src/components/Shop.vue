@@ -15,8 +15,6 @@
       'shop-main': Main
     },
     mounted () {
-      this.$store.dispatch('shopheader', this.$route.params.id)
-      this.$store.dispatch('shoptab1', this.$route.params.id)
       this.$store.dispatch('ratingstags', this.$route.params.id)
     }
   }

@@ -5,13 +5,28 @@
           <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#arrow-left.6f6409e"></use>
         </svg>
       </div>
-      <h1>发现</h1>
+      <h1>{{titlehead}}</h1>
     </div>
 </template>
 
 <script>
+import { mapState } from 'vuex'
 export default {
-  name: 'my-header'
+  name: 'my-header',
+  data () {
+    return {
+      title: ''
+    }
+  },
+  mounted () {
+    console.log(this)
+    if (this.titlehead) {
+      this.title = this.titlehead
+    }
+  },
+  computed: {
+    ...mapState(['titlehead'])
+  }
 }
 </script>
 <style lang="scss" scoped>

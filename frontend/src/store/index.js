@@ -10,7 +10,7 @@ var offset = 0
 export default new Vuex.Store({
   state: {
     homeinput: '搜索商家、商品',
-    weather: [],
+    weather: '',
     place: '',
     hotsearch: '',
     banner: {
@@ -30,7 +30,7 @@ export default new Vuex.Store({
   },
   mutations: {
     WEATHER: function (state) {
-      state.weather.push(_this.weather)
+      state.weather = [_this.weather]
     },
     HOTSEARCH: function (state) {
       state.hotsearch = _this.hotsearch

@@ -20,6 +20,7 @@ export default {
   padding-bottom:px2rem(50) 
 }
 .header {
+  position: relative;
   color: #fff;
   top: 0;
   left: 0;

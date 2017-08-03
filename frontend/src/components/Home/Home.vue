@@ -12,6 +12,7 @@ import header from './Header'
 import banner from './Banner'
 import loadmore from './Loadmore'
 import bomtab from './Bomtab'
+import { mapState } from 'vuex'
 export default {
   name: 'home',
   data () {
@@ -24,6 +25,22 @@ export default {
     'my-banner': banner,
     'my-loadmore': loadmore,
     'my-bottom': bomtab
+  },
+  computed: {
+    ...mapState(['homeprolist'])
+  },
+  methods: {
+    loadMore () {
+      var _this = this
+      if (_this.loading) {
+        return false
+      }
+      _this.loading = true
+      setTimeout(() => {
+        _this.$store.dispatch('homeprolist')
+        _this.loading = false
+      }, 50)
+    }
   }
 }
 </script>

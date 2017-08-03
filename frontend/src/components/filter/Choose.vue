@@ -37,7 +37,7 @@
       </div>
       <section data-v-fd238482="" data-v-98a11d7e="" class="filter-extend filter-sort open" v-show="show2">
         <ul data-v-fd238482="">
-          <li data-v-fd238482="" :class="active[0]" @click="select(0)">
+          <li data-v-fd238482="" :class="active[0]" @click="select(0,0)">
             <svg data-v-fd238482="">
               <use data-v-fd238482="" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#default"></use>
             </svg>
@@ -46,7 +46,7 @@
               <use data-v-fd238482="" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#selected"></use>
             </svg>
           </li>
-          <li data-v-fd238482=""  :class="active[1]" @click="select(1)">
+          <li data-v-fd238482=""  :class="active[1]" @click="select(1,5)">
             <svg data-v-fd238482="">
               <use data-v-fd238482="" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#distance"></use>
             </svg>
@@ -55,7 +55,7 @@
               <use data-v-fd238482="" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#selected"></use>
             </svg>
           </li>
-          <li data-v-fd238482=""  :class="active[2]" @click="select(2)">
+          <li data-v-fd238482=""  :class="active[2]" @click="select(2,6)">
             <svg data-v-fd238482="">
               <use data-v-fd238482="" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#hot"></use>
             </svg>
@@ -64,7 +64,7 @@
               <use data-v-fd238482="" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#selected"></use>
             </svg>
           </li>
-          <li data-v-fd238482=""  :class="active[3]" @click="select(3)">
+          <li data-v-fd238482=""  :class="active[3]" @click="select(3,1)">
             <svg data-v-fd238482="">
               <use data-v-fd238482="" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#price"></use>
             </svg>
@@ -73,7 +73,7 @@
               <use data-v-fd238482="" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#selected"></use>
             </svg>
           </li>
-          <li data-v-fd238482=""  :class="active[4]" @click="select(4)">
+          <li data-v-fd238482=""  :class="active[4]" @click="select(4,2)">
             <svg data-v-fd238482="">
               <use data-v-fd238482="" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#speed"></use>
             </svg>
@@ -82,7 +82,7 @@
               <use data-v-fd238482="" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#selected"></use>
             </svg>
           </li>
-          <li data-v-fd238482=""  :class="active[5]" @click="select(5)">
+          <li data-v-fd238482=""  :class="active[5]" @click="select(5,3)">
             <svg data-v-fd238482="">
               <use data-v-fd238482="" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#rating"></use>
             </svg>
@@ -155,8 +155,12 @@ export default {
       this.show1 = false
       this.showall = !this.showall
     },
-    select: function (index) {
+    select: function (index, id) {
+      this.active = ['', '', '', '', '', '']
       var active = this.active
+      this.$store.dispatch('filter')
+      this.$store.dispatch('sort', id)
+      this.$store.dispatch('filterlist')
       Vue.set(active, index, 'active')
     }
   }

@@ -6,6 +6,7 @@ Vue.use(Vuex)
 Vue.use(VueResource)
 var _this = this
 var offset = 0
+var order = 0
 
 export default new Vuex.Store({
   state: {
@@ -41,6 +42,12 @@ export default new Vuex.Store({
       state.banner.bannerPage = _this.bannerPage
     },
     HOMEPROLIST: function (state) {
+      state.homeprolist = state.homeprolist.concat(_this.homeprolist)
+    },
+    FILTER: function (state) {
+      state.homeprolist = []
+    },
+    FILTERLIST: function (state) {
       state.homeprolist = state.homeprolist.concat(_this.homeprolist)
     },
     SHOPHEADER: function (state) {
@@ -171,6 +178,8 @@ export default new Vuex.Store({
     filterkinds: function (context) {
       Vue.http.get('http://localhost:3000/filter/kinds').then(function (res) {
         _this.filterkinds = res.body
+        console.log(_this)
+        console.log(context)
         context.commit('FILTERKINDS')
       }, function (err) {
         console.log(err)
@@ -208,6 +217,31 @@ export default new Vuex.Store({
       }, function (err) {
         console.log(err)
       })
+    },
+    filterlist: function (context) {
+      Vue.http.get('http://localhost:3000/filter/select', {
+        params: {
+          offset: offset,
+          order: order
+        }
+      }).then(function (res) {
+        for (var i = 0; i < res.body.length; i++) {
+          res.body[i].isShow = false
+        }
+        _this.homeprolist = res.body
+        context.commit('HOMEPROLIST')
+      }, function (err) {
+        console.log(err)
+      })
+      offset += 20
+    },
+    filter: function (context) {
+      context.commit('FILTER')
+      offset = 0
+    },
+    sort: function (context, id) {
+      order = id
+      console.log(context)
     }
   }
 })

@@ -2,12 +2,15 @@
   <div class="filter">
     <my-header />
     <Choose />
+    <loadmore />
   </div>
 </template>
 
 <script>
 import header from './filter/Header'
 import choose from './filter/Choose'
+import loadmore from './filter/Loadmore'
+import { mapState } from 'vuex'
 export default {
   name: 'filter',
   data () {
@@ -17,7 +20,13 @@ export default {
   },
   components: {
     'my-header': header,
-    'Choose': choose
+    'Choose': choose,
+    'loadmore': loadmore
+  },
+  mounted () {
+  },
+  computed: {
+    ...mapState(['homeList'])
   }
 }
 </script>

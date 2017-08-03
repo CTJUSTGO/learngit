@@ -1,7 +1,7 @@
 <template>
   <div class="loadmore">
     <h3 class="index-title">推荐商家</h3>
-    <ul v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="80">
+    <ul v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="80" class="ul-list">
       <li class="pro-list" :key="index" v-for="(item,index) in homeprolist">
         <router-link :to="'/shop/'+item.id">
           <div class="pro-list-l">
@@ -64,6 +64,7 @@
             </div>
           </div>
       </li>
+      <span class="loding">正在加载<mt-spinner class="lod-icon" type="fading-circle"></mt-spinner></span>
     </ul>
   </div>
 </template>
@@ -92,7 +93,7 @@ export default {
       setTimeout(() => {
         _this.$store.dispatch('homeprolist')
         _this.loading = false
-      }, 50)
+      }, 500)
     },
     addClick (i) {
       this.homeprolist[i].isShow = !this.homeprolist[i].isShow
@@ -128,6 +129,17 @@ export default {
     border: px2rem(1) solid #eee;
   }
   ul{
+    padding-bottom: px2rem(105);
+    .loding{
+      display: flex;
+      font-size: px2rem(24);
+      height: 100%;
+      justify-content: center;
+      color: #999;
+      .lod-icon{
+        margin-left: px2rem(10);
+      }
+    }
     .pro-list{
       display: flex;
       border-bottom: px2rem(1) solid #eee;

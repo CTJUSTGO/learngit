@@ -7,6 +7,7 @@ import Filter from '@/components/Filter'
 import Order from '@/components/Order/Order'
 import User from '@/components/User/User'
 import Login from '@/components/Login/Login'
+import Unlogin from '@/components/Unlogin/Unlogin'
 
 Vue.use(Router)
 
@@ -28,7 +29,7 @@ export default new Router({
       component: Shop
     },
     {
-      path: '/filter',
+      path: '/filter/:id',
       name: 'Filter',
       component: Filter
     },
@@ -46,6 +47,11 @@ export default new Router({
       path: '/login',
       name: 'Login',
       component: Login
+    },
+    {
+      path: '/unlogin',
+      name: 'Unlogin',
+      component: Unlogin
     }
   ]
 })

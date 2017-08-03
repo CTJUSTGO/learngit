@@ -2,20 +2,23 @@
   <div class="menuview">
     <div class="menuview1">
       <ul class="menucategory-29kyE">
-        <li v-for="(item,index) in shoptab1" v-on:click="">
+        <li v-for="(item,index) in shoptab1" :class="{'checked':index===addClass}">
           <img v-if="item.icon_url" :src="'https://fuss10.elemecdn.com/'+ item.icon_url.substr(0,1) + '/' + item.icon_url.substr(1,2) + '/' + item.icon_url.substr(3) +'.jpeg?imageMogr/format/webp/thumbnail/18x/'" />
           <span>{{ item.name }}</span>
         </li>
       </ul>
       <section class="container">
         <div class="scroller">
-          <dl v-for="(item,index) in shoptab1">
+          <dl v-for="(item,index) in shoptab1" class="odl">
             <dt>
               <b>{{ item.name }}</b>
               <span>{{ item.description }}</span>
-              <div>...</div>
+              <div>
+                <span v-on:click="change(index)">...</span>
+                <p v-show="item.isShow" class="popup">{{ item.name }}{{ item.description }}</p>
+              </div>
             </dt>
-            <dd v-for="val in item.foods">
+            <dd v-for="(val, key) in item.foods">
               <span class="foodimg">
                 <img :src="val.image_path|img" alt="" v-if="val.image_path">
               </span>
@@ -35,9 +38,9 @@
                 </strong>
                 <div class="cartbutton" v-if="val.specfoods.length>1">选规格</div>
                 <div v-else-if="val.specfoods.length=1" class="cartbutton1">
-                  <svg v-if="counter"><use xlink:href="#cart-add" v-on:click="counter-=1"></use></svg>
-                  <span v-if="counter">{{counter}}</span>
-                  <svg v-on:click="counter+=1"><use xlink:href="#cart-minus"></use></svg>
+                  <svg v-if="val.counter"><use xlink:href="#cart-add" v-on:click="minus(index,key)"></use></svg>
+                  <span v-if="val.counter">{{val.counter}}</span>
+                  <svg v-on:click="add(index,key)"><use xlink:href="#cart-minus"></use></svg>
                 </div>
               </section>
             </dd>
@@ -62,15 +65,47 @@
 
 <script>
 import { mapState } from 'vuex'
+import $ from 'jquery'
 export default {
   name: 'tab1',
   mounted () {
     var id = this.$route.params.id
     this.$store.dispatch('shoptab1', id)
     this.$store.dispatch('shopheader', id)
+    this.flag = true
+    var that = this
+    var shopLeft = $('.menucategory-29kyE')
+    var shopRight = $('.container')
+    var oDl = $('.odl')
+    console.log(shopRight)
+    console.log(shopLeft.find('li').eq(0))
+    shopLeft.find('li').eq(0).addClass('checked')
+    shopLeft.on('click', 'li', function () {
+      that.flag = false
+      var index = $(this).index()
+      console.log(index)
+      $(this).addClass('checked').siblings().removeClass('checked')
+      shopRight.animate({
+        scrollTop: that.getHeight(index)
+      }, function () {
+        that.flag = true
+      })
+    })
+    shopRight.scroll(function () {
+      oDl.each(function (index) {
+        if ($(this).position().top <= 0 && that.flag === true) {
+          shopLeft.find('li').removeClass('checked').eq(index).addClass('checked')
+        }
+      })
+    })
   },
   computed: {
     ...mapState(['shoptab1', 'shopheader'])
+  },
+  data () {
+    return {
+      addClass: 0
+    }
   },
   filters: {
     img: function (img) {
@@ -81,9 +116,23 @@ export default {
       }
     }
   },
-  data () {
-    return {
-      counter: 0
+  methods: {
+    add (index, key, counter) {
+      this.shoptab1[index].foods[key].counter += 1
+    },
+    minus (index, key) {
+      this.shoptab1[index].foods[key].counter -= 1
+    },
+    change (index) {
+      this.shoptab1[index].isShow = !this.shoptab1[index].isShow
+    },
+    getHeight (num) {
+      var totalHeight = 0
+      var oDl = $('.odl')
+      for (var i = 0; i < num; i++) {
+        totalHeight += oDl.eq(i).height()
+      }
+      return totalHeight
     }
   }
 }
@@ -104,19 +153,26 @@ export default {
       height:100%;
       overflow-y:auto;
       width:px2rem(170);
+      margin-top: px2rem(4); 
+      padding-bottom: px2rem(10);
       li{
         position: relative;
         padding:px2rem(35) px2rem(15);
         border-bottom:1px solid #ededed;
         color:#666;
-        font-size:px2rem(24);
-        line-height:px2rem(24);
+        font-size:px2rem(26);
+        line-height:px2rem(26);
         width:100%;
         img{
           display:inline-block;
           width:px2rem(18);
           height:px2rem(25);
         }
+      }
+      .checked{
+        background-color: #fff;
+        border-left: px2rem(4) solid #3190e8;
+        font-weight: 600;
       }
     }
     .container{
@@ -125,6 +181,7 @@ export default {
 			position: relative;
       top: px2rem(4);
 			overflow-y:auto;
+      margin-top: px2rem(2);
       dl{
         width:100%;
         dt{
@@ -145,15 +202,39 @@ export default {
 						flex:1;
           }
           div{
-            position:absolute;
-            right: 0;
-            top: 0;
-            bottom: 0; 
-            line-height: px2rem(64);
-            width:px2rem(70);
-            text-align:center;
-            font-size:px2rem(32);
-            color: #999;
+            span{
+              position:absolute;
+              right: 0;
+              top: 0;
+              bottom: 0; 
+              line-height: px2rem(64);
+              width:px2rem(70);
+              text-align:center;
+              font-size:px2rem(32);
+              color: #999;
+            }
+            .popup{
+              position: absolute;
+              top: px2rem(60);
+              background-color: #39373a;
+              opacity: .97;
+              width: 63%;
+              right: px2rem(8);
+              z-index: 55;
+              color: #eee;
+              font-size: px2rem(24);
+              border-radius: px2rem(8);
+              padding: px2rem(18) px2rem(20);
+              &:before{
+                content: "";
+                position: absolute;
+                top: 0;
+                transform: translateY(-100%);
+                right: px2rem(20);
+                border: px2rem(10) solid transparent;
+                border-bottom-color: #39373a;
+              }
+            }
           }
         }
         dd{
@@ -164,7 +245,7 @@ export default {
 					display: flex;
           .foodimg{
             margin-right: 4%;
-            
+            width:px2rem(103.6);
             display: block;
             
             vertical-align: top;
@@ -242,10 +323,12 @@ export default {
               right: 0;
               bottom: -px2rem(5);
               svg{
+                padding: px2rem(7);
                 width: px2rem(41);
                 height: px2rem(41);
                 vertical-align: middle;
                 fill: #3190e8;
+                z-index: 9;
               }
               span{
                 text-align: center;

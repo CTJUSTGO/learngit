@@ -17,7 +17,7 @@ export default new Vuex.Store({
       bannerPage: ''
     },
     homeprolist: [],
-    shopheader: [],
+    shopheader: '',
     giftList: [],
     saleList: [],
     filter: {
@@ -45,7 +45,7 @@ export default new Vuex.Store({
       state.homeprolist = state.homeprolist.concat(_this.homeprolist)
     },
     SHOPHEADER: function (state) {
-      state.shopheader.push(_this.shopheader)
+      state.shopheader = [_this.shopheader]
     },
     FINDGIFT: function (state) {
       state.giftList = _this.giftList
@@ -190,7 +190,6 @@ export default new Vuex.Store({
     ratingsscores: function (context, id) {
       Vue.http.get('http://localhost:3000/ratings/scores?id=' + id).then(function (res) {
         _this.ratingsscores = res.body
-        console.log(_this.ratingsscores)
         context.commit('RATINGSSCORES')
       }, function (err) {
         console.log(err)

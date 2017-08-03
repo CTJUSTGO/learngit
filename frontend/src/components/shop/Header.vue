@@ -1,10 +1,7 @@
 <template>
   <div>
   <div class="shop-header" v-for="shopheader in shopheader">
-    <div class="shop-header-background" v-if="shopheader.image_path.substr(-3) == 'png'"
-    :style="'background-image:url(https://fuss10.elemecdn.com/'+ shopheader.image_path.substr(0,1) + '/' + shopheader.image_path.substr(1,2) + '/' + shopheader.image_path.substr(3) +'.png?imageMogr/format/webp/thumbnail/!40p/blur/50x40/)'"></div>
-    <div class="shop-header-background" v-else-if="shopheader.image_path.substr(-3) == 'peg'"
-    :style="'background-image:url(https://fuss10.elemecdn.com/'+ shopheader.image_path.substr(0,1) + '/' + shopheader.image_path.substr(1,2) + '/' + shopheader.image_path.substr(3) +'.jpeg?imageMogr/format/webp/thumbnail/!40p/blur/50x40/)'"></div>
+    <div class="shop-header-background" :style="image(shopheader.image_path)"></div>
     <div class="shop-header-navBar">
       <router-link to="/">
         <svg><use xlink:href="#arrow-left"></use></svg> 
@@ -71,7 +68,12 @@
           <h1>商家详情</h1>
         </header>
         <div class="modal-content">
-
+          <section class="section">
+            <h3>活动与属性</h3>
+            <div>
+              <div v-for></div>
+            </div>
+          </section>
         </div>
       </div>
     </transition>
@@ -102,6 +104,13 @@ export default {
         return 'https://fuss10.elemecdn.com/' + e.substr(0, 1) + '/' + e.substr(1, 2) + '/' + e.substr(3) + '.png?imageMogr/format/webp/thumbnail/!69x69r/gravity/Center/crop/69x69/'
       } else if (e.substr(-3) === 'peg') {
         return 'https://fuss10.elemecdn.com/' + e.substr(0, 1) + '/' + e.substr(1, 2) + '/' + e.substr(3) + '.jpeg?imageMogr/format/webp/thumbnail/!69x69r/gravity/Center/crop/69x69/'
+      }
+    },
+    image (e) {
+      if (e.substr(-3) === 'png') {
+        return 'background-image:url(https://fuss10.elemecdn.com/' + e.substr(0, 1) + '/' + e.substr(1, 2) + '/' + e.substr(3) + '.png?imageMogr/format/webp/thumbnail/!40p/blur/50x40/)'
+      } else if (e.substr(-3) === 'peg') {
+        return 'background-image:url(https://fuss10.elemecdn.com/' + e.substr(0, 1) + '/' + e.substr(1, 2) + '/' + e.substr(3) + '.jpeg?imageMogr/format/webp/thumbnail/!40p/blur/50x40/)'
       }
     }
   }

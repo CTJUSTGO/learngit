@@ -26,7 +26,8 @@ export default new Vuex.Store({
     },
     shoptab1: [],
     ratingstags: [],
-    ratings: []
+    ratings: [],
+    username: ''
   },
   mutations: {
     WEATHER: function (state) {
@@ -70,6 +71,9 @@ export default new Vuex.Store({
     },
     RATINGS: function (state) {
       state.ratings = _this.ratings
+    },
+    USERNAME: function (state) {
+      state.username = _this.username
     }
   },
   // getters state 的计算属性
@@ -206,6 +210,7 @@ export default new Vuex.Store({
     login: function (context, users) {
       var username = users.username
       var password = users.userpwd
+      _this.username = username
       Vue.http.get('http://10.20.152.6:3000/users', {
         params: {
           name: username,
@@ -213,10 +218,14 @@ export default new Vuex.Store({
         }
       }).then(function (res) {
         alert(res.data.msg)
-        window.location.href = '#/user'
+        if (res.data.code === 0) {
+          document.cookie = 'isLogin=' + username
+          window.location.href = '#/user'
+        }
       }, function (err) {
         console.log(err)
       })
+      context.commit('USERNAME')
     },
     filterlist: function (context) {
       Vue.http.get('http://localhost:3000/filter/select', {

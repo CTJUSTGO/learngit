@@ -5,14 +5,15 @@
       :key="index"
       v-for="(item,index) in banner.bannerPage"
       >
-      <a
+      <router-link
         class="banner-list-a"
-        href="#" :key="indexx"
-        v-for="(item,indexx) in banner.bannerPage[index]"
+        :key="indexx"
+        v-for="(ii,indexx) in banner.bannerPage[index]"
+        :to="'/filter/' + ii.id"
         >
-        <img class="banner-list-img" :src="sub(item.image_hash)" alt="" />
-        <span class="title">{{ item.name }}</span>
-      </a>
+        <img class="banner-list-img" :src="sub(ii.image_hash)" alt="" />
+        <span class="title">{{ ii.name }}</span>
+      </router-link>
     </mt-swipe-item>
   </mt-swipe>
 </template>

@@ -5,12 +5,13 @@ import App from './App'
 import router from './router'
 import VueResource from 'vue-resource'
 import store from './store'
-import { Swipe, SwipeItem, Loadmore, Navbar, InfiniteScroll, TabItem, TabContainer, TabContainerItem, Header } from 'mint-ui'
+import { Swipe, SwipeItem, Loadmore, Navbar, InfiniteScroll, TabItem, TabContainer, TabContainerItem, Header, Spinner } from 'mint-ui'
 
 Vue.component(TabContainer.name, TabContainer)
 Vue.component(TabContainerItem.name, TabContainerItem)
 Vue.component(Navbar.name, Navbar)
 Vue.component(TabItem.name, TabItem)
+Vue.component(Spinner.name, Spinner)
 
 import './assets/css/reset.scss'
 

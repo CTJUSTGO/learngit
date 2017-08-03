@@ -12,7 +12,8 @@
       <div class="shop-header-content">
         <h2 class="shop-header-shopName">{{ shopheader.name }}</h2>
         <p class="shop-header-delivery">
-          <span>商家配送/</span>
+          <span v-if="shopheader.delivery_mode">{{ shopheader.delivery_mode.text }} /</span>
+          <span v-else-if="!shopheader.delivery_mode">商家配送/</span>
           <span>{{ shopheader.order_lead_time }}分钟送达 / </span>
           <span>配送费¥{{ shopheader.float_delivery_fee }}</span>
         </p>

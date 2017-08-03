@@ -169,6 +169,12 @@ export default new Vuex.Store({
     },
     shoptab1: function (context, id) {
       Vue.http.get('http://localhost:3000/shop/tab1?id=' + id).then(function (res) {
+        for (var i = 0; i < res.body.length; i++) {
+          for (var j = 0; j < res.body[i].foods.length; j++) {
+            res.body[i].foods[j].counter = 0
+          }
+          res.body[i].isShow = false
+        }
         _this.shoptab1 = res.body
         context.commit('SHOPTAB1')
       }, function (err) {

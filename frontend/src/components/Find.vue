@@ -2,7 +2,7 @@
 <template>
   <div id="find">
     <div class="header">
-      <div class="icon">
+      <div class="icon" @click="back()">
         <svg>
           <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#arrow-left.6f6409e"></use>
         </svg>
@@ -81,6 +81,11 @@ import { mapState } from 'vuex'
 import bomtab from './Find/Bomtab'
 export default {
   name: 'Find',
+  methods: {
+    back: function () {
+      location.href = '/#/'
+    }
+  },
   mounted () {
     this.$store.dispatch('findgift')
     this.$store.dispatch('findsale')

@@ -138,6 +138,8 @@ export default {
       }
     },
     getids: function (index) {
+      this.show1 = false
+      this.showall = !this.showall
       this.$store.dispatch('getids', index)
       this.$store.dispatch('filter')
       this.$store.dispatch('filterlist')
@@ -163,6 +165,8 @@ export default {
     select: function (index, id) {
       this.active = ['', '', '', '', '', '']
       var active = this.active
+      this.show2 = false
+      this.showall = !this.showall
       this.$store.dispatch('filter')
       this.$store.dispatch('sort', id)
       this.$store.dispatch('filterlist')

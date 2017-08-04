@@ -1,6 +1,6 @@
 <template>
  <div class="header">
-      <div class="icon">
+      <div class="icon" @click="back">
         <svg>
           <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#arrow-left.6f6409e"></use>
         </svg>
@@ -16,6 +16,11 @@ export default {
   data () {
     return {
       title: ''
+    }
+  },
+  methods: {
+    back: function () {
+      location.href = '/#/'
     }
   },
   mounted () {

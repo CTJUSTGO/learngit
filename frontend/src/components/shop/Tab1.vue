@@ -49,7 +49,9 @@
       </section>
       <div class="bottom">
 					<div class="bottomNav">
-						<span class="gwc"></span>
+						<span class="gwc1" v-if="num"></span>
+            <span class="gwc" v-else-if="!num"></span>
+            <span class="num" v-if="num">{{num}}</span>
 						<div class="bottomNav1">
 							<p class="bottomP1">￥0</p>
 							<p class="bottomP2" v-for="shopheader in shopheader">{{ shopheader.piecewise_agent_fee.tips }}</p>
@@ -77,9 +79,6 @@ export default {
     var shopLeft = $('.menucategory-29kyE')
     var shopRight = $('.container')
     var oDl = $('.odl')
-    console.log(shopRight)
-    console.log(shopLeft.find('li').eq(0))
-    shopLeft.find('li').eq(0).addClass('checked')
     shopLeft.on('click', 'li', function () {
       that.flag = false
       var index = $(this).index()
@@ -93,7 +92,7 @@ export default {
     })
     shopRight.scroll(function () {
       oDl.each(function (index) {
-        if ($(this).position().top <= 0 && that.flag === true) {
+        if ($(this).position().top <= 50 && that.flag === true) {
           shopLeft.find('li').removeClass('checked').eq(index).addClass('checked')
         }
       })
@@ -104,7 +103,8 @@ export default {
   },
   data () {
     return {
-      addClass: 0
+      addClass: 0,
+      num: 0
     }
   },
   filters: {
@@ -119,9 +119,11 @@ export default {
   methods: {
     add (index, key, counter) {
       this.shoptab1[index].foods[key].counter += 1
+      this.num += 1
     },
     minus (index, key) {
       this.shoptab1[index].foods[key].counter -= 1
+      this.num -= 1
     },
     change (index) {
       this.shoptab1[index].isShow = !this.shoptab1[index].isShow
@@ -371,8 +373,31 @@ export default {
 					background-color:#3d3d3f;
 					background-repeat:no-repeat; 
 					background-position:center;
-
 				}
+        .gwc1{
+					position: absolute;
+					left:px2rem(16);
+					bottom:px2rem(10);
+					border:px2rem(10) solid #444;
+					width:px2rem(80);
+					height:px2rem(80);
+					border-radius:50%;
+					background-image:url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1OCA1OCIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPjxkZWZzPjxmaWx0ZXIgaWQ9ImEiIHdpZHRoPSIyMDAlIiBoZWlnaHQ9IjIwMCUiIHg9Ii01MCUiIHk9Ii01MCUiIGZpbHRlclVuaXRzPSJvYmplY3RCb3VuZGluZ0JveCI+PGZlT2Zmc2V0IGluPSJTb3VyY2VBbHBoYSIgcmVzdWx0PSJzaGFkb3dPZmZzZXRPdXRlcjEiLz48ZmVHYXVzc2lhbkJsdXIgc3RkRGV2aWF0aW9uPSIxLjUiIGluPSJzaGFkb3dPZmZzZXRPdXRlcjEiIHJlc3VsdD0ic2hhZG93Qmx1ck91dGVyMSIvPjxmZUNvbG9yTWF0cml4IHZhbHVlcz0iMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMC4wOCAwIiBpbj0ic2hhZG93Qmx1ck91dGVyMSIgcmVzdWx0PSJzaGFkb3dNYXRyaXhPdXRlcjEiLz48ZmVNZXJnZT48ZmVNZXJnZU5vZGUgaW49InNoYWRvd01hdHJpeE91dGVyMSIvPjxmZU1lcmdlTm9kZSBpbj0iU291cmNlR3JhcGhpYyIvPjwvZmVNZXJnZT48L2ZpbHRlcj48cGF0aCBpZD0iYiIgZD0iTTcuNjE0IDQuMDUxYy0xLjA2Ni4wODYtMS40NTItLjM5OC0xLjc1Mi0xLjU4NEM1LjU2MiAxLjI4LjMzIDUuODguMzMgNS44OGwzLjcxIDE5LjQ3NmMwIC4xNDgtMS41NiA3LjUxNS0xLjU2IDcuNTE1LS40ODkgMi4xOS4yOTIgNC4yNyAzLjU2IDQuMzIgMCAwIDM2LjkxNy4wMTcgMzYuOTIuMDQ3IDEuOTc5LS4wMTIgMi45ODEtLjk5NSAzLjAxMy0zLjAzOS4wMy0yLjA0My0xLjA0NS0yLjk3OC0yLjk4Ny0yLjk5M0w4LjgzIDMxLjE5MnMuODYtMy44NjUgMS4wNzctMy44NjVjMCAwLTUuNzg4LjEyMiAzMi4wNjUtMS45NTYuNjA2LS4wMzMgMi4wMTgtLjc2NCAyLjI5OC0xLjg0OCAxLjExMy00LjMxNyA0LjAwOC0xMy4yNiA0LjQ1OC0xNS42NC45MzItNC45MjUgMi4wNjEtOC41NTgtNC4yOC03LjQwNSAwIDAtMzUuNzY4IDMuNDg3LTM2LjgzMyAzLjU3M3oiLz48L2RlZnM+PGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIiBmaWx0ZXI9InVybCgjYSkiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDMgMikiPjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDUuMDM4IDcuODA4KSI+PG1hc2sgaWQ9ImMiIGZpbGw9IiNmZmYiPjx1c2UgeGxpbms6aHJlZj0iI2IiLz48L21hc2s+PHVzZSBmaWxsPSIjRkZGIiB4bGluazpocmVmPSIjYiIvPjxwYXRoIGZpbGw9IiMyMDczQzEiIGQ9Ik01My45NjIgNy43NzRsLTUuNzAxIDE5LjMwNS00MC43OCAxLjU3NHoiIG9wYWNpdHk9Ii4xIiBtYXNrPSJ1cmwoI2MpIi8+PC9nPjxwYXRoIHN0cm9rZT0iI0ZGRiIgc3Ryb2tlLXdpZHRoPSI2IiBkPSJNOS4zNzQgMTguNzIyUzcuODY4IDExLjI4MyA3LjMyMyA4LjcxQzYuNzc4IDYuMTM2IDUuODYgNS4zMyAzLjk3OCA0LjUyIDIuMDk2IDMuNzEzLjM2NyAyLjI4Ni4zNjcgMi4yODYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxjaXJjbGUgY3g9IjQ2IiBjeT0iNTEiIHI9IjQiIGZpbGw9IiNGRkYiLz48Y2lyY2xlIGN4PSIxMiIgY3k9IjUxIiByPSI0IiBmaWxsPSIjRkZGIi8+PC9nPjwvc3ZnPg==);
+					background-size:px2rem(48);
+					background-color:#3190e8;
+					background-repeat:no-repeat; 
+					background-position:center;
+				}
+        .num{
+          color: #fff;
+          position: absolute;
+          top: px2rem(-17);
+          left: px2rem(96);
+          background-color: #ff461d;
+          border-radius: px2rem(24);
+          padding: px2rem(4) px2rem(10);
+          font-size: px2rem(20);
+        }
 				.bottomNav1{
 					color:#fff;
 					flex:1;

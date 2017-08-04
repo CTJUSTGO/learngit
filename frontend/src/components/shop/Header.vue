@@ -72,8 +72,30 @@
           <section class="section">
             <h3>活动与属性</h3>
             <div>
-              <div v-for></div>
+              <div v-for="item in shopheader.activities" class="activity-container">
+                <i>{{ item.icon_name }}</i>
+                <span>{{ item.description }}</span>
+              </div>
+              <div class="activity-container" v-if="shopheader.supports.icon_name">
+                <i>{{ shopheader.supports.icon_name }}</i>
+                <span>{{ shopheader.supports.description }}</span>
+              </div>
             </div>
+          </section>
+          <section class="section" v-if="shopheader.albums">
+            <h3>商场实景</h3>
+            <a v-for="item in shopheader.albums">
+              <img :src="sub(item.cover_image_hash)" />
+              <span>{{item.name}}({{item.count}})张</span>
+            </a>
+          </section>
+          <section class="section">
+            <h3>商家信息</h3>
+            <ul>
+              <li>{{shopheader.name}}</li>
+              <li>地址：{{shopheader.address}}</li>
+              <li>营业时间：{{shopheader.opening_hours[0]}}</li>
+            </ul>
           </section>
         </div>
       </div>
@@ -247,10 +269,26 @@ export default {
     opacity: 0
   }
   .fage-enter-active, .fage-leave-active {
-    transition: opacity .5s
+    animation: big-in .5s;
   }
   .fage-enter, .fage-leave-to {
-    opacity: 0
+    animation: big-out .5s;
+  }
+  @keyframes big-in {
+    0% {
+      left: px2rem(750);
+    }
+    100% {
+      left: 0;
+    }
+  }
+  @keyframes big-out {
+    0% {
+      left: 0;
+    }
+    100% {
+      left: px2rem(750);
+    }
   }
   .bulletin-modal-container{
     position: fixed;
@@ -358,18 +396,16 @@ export default {
   }
   .modal-container{
     position: fixed;
-    left: 0;
-    right: 0;
     top: 0;
     bottom: 0;
+    width: 100%;
     overflow: auto;
     z-index: 100;
-    background-color: red;
+    background-color: #fff;
     header{
-      position: fixed;
+      position: absolute;
       top: 0;
-      left: 0;
-      right: 0;
+      width: 100%;
       text-align: center;
       background-color: #2196f3;
       color: #fff;
@@ -394,6 +430,77 @@ export default {
       height: 100%;
       box-sizing: border-box;
       overflow: auto;
+      background-color: #eee;
+      .section{
+        margin-bottom: px2rem(20);
+        padding: px2rem(30);
+        font-size: px2rem(26);
+        background-color: #fff;
+        color: #666;
+        overflow: hidden;
+        h3{
+          margin: 0 px2rem(-30);
+          padding: px2rem(16) px2rem(30);
+          border-bottom: 1px solid #eee;
+          color: #333;
+          font-weight: 400;
+          font-size: px2rem(30);
+          line-height: px2rem(45);
+        }
+        .activity-container{
+          margin: px2rem(30) 0;
+          i{
+            margin-right: px2rem(10);
+            font-size: px2rem(20);
+            font-style: normal;
+            line-height: 1;
+            height: px2rem(22);
+            display: inline-block;
+            box-sizing: border-box;
+            text-align: center;
+            border: 1px solid;
+            border-radius: px2rem(3);
+            background-color: rgb(240, 115, 115);
+            color: rgb(255, 255, 255);
+            border-color: rgb(240, 115, 115);
+          }
+          span{
+            line-height: px2rem(32);
+            font-size: px2rem(20);
+          }
+        }
+        a{
+          position: relative;
+          float: left;
+          overflow: hidden;
+          margin-top: px2rem(24);
+          margin-right: px2rem(14);
+          width: px2rem(158);
+          height: px2rem(158);
+          img{
+            display: block;
+            width: 100%;
+            height: 100%;
+          }
+          span{
+            display: block;
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            text-align: center;
+            height:px2rem(36);
+            line-height:px2rem(36);
+            color: #eee;
+            background-color: rgba(0,0,0,.6);
+          }
+        }
+        li{
+          display: flex;
+          padding: px2rem(30) px2rem(10) px2rem(30) 0;
+          justify-content: space-between;
+          margin-right: px2rem(-30);
+        }
+      }
     }
   }
 </style>

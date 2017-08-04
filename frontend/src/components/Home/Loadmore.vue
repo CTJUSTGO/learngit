@@ -64,7 +64,7 @@
             </div>
           </div>
       </li>
-      <span class="loding">正在加载<mt-spinner class="lod-icon" type="fading-circle"></mt-spinner></span>
+      <span class="loding" v-show="isShowloding">正在加载<mt-spinner class="lod-icon" type="fading-circle"></mt-spinner></span>
     </ul>
   </div>
 </template>
@@ -81,11 +81,12 @@ export default {
 
   },
   computed: {
-    ...mapState(['homeprolist'])
+    ...mapState(['homeprolist', 'isShowloding'])
   },
   methods: {
     loadMore () {
       var _this = this
+      _this.$store.commit('ISSHOWLODING')
       if (_this.loading) {
         return false
       }

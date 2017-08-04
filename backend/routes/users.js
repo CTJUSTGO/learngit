@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var MongoClient = require('mongodb').MongoClient;
-var DB_CONN_STR = "mongodb://127.0.0.1:27017/element";
+var DB_CONN_STR = "mongodb://10.20.152.6:27017/element";
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {

@@ -27,7 +27,8 @@ export default new Vuex.Store({
     shoptab1: [],
     ratingstags: [],
     ratings: [],
-    username: ''
+    username: '',
+    isShowloding: true
   },
   mutations: {
     WEATHER: function (state) {
@@ -44,6 +45,7 @@ export default new Vuex.Store({
     },
     HOMEPROLIST: function (state) {
       state.homeprolist = state.homeprolist.concat(_this.homeprolist)
+      state.isShowloding = false
     },
     FILTER: function (state) {
       state.homeprolist = []
@@ -74,6 +76,9 @@ export default new Vuex.Store({
     },
     USERNAME: function (state) {
       state.username = _this.username
+    },
+    ISSHOWLODING: function (state) {
+      state.isShowloding = true
     }
   },
   // getters state 的计算属性
